@@ -37,7 +37,10 @@
 
             <!-- Tab Navigation -->
             <div class="tab-navigation">
-                <button class="tab-button active" onclick="switchTab('classic')">
+                <button class="tab-button active" onclick="switchTab('basic')">
+                    📚 Algoritmos Básicos
+                </button>
+                <button class="tab-button" onclick="switchTab('classic')">
                     🎯 Algoritmos Clásicos
                 </button>
                 <button class="tab-button" onclick="switchTab('evolutionary')">
@@ -45,8 +48,23 @@
                 </button>
             </div>
 
+            <!-- Basic Algorithms Tab Content -->
+            <div id="basic-tab" class="tab-content active">
+                <div class="tab-intro">
+                    <h2>📚 Algoritmos Básicos</h2>
+                    <p>Algoritmos fundamentales ordenados por nivel de dificultad. Perfectos para aprender los conceptos
+                        básicos.</p>
+                </div>
+
+                <!-- Placeholder for basic algorithms -->
+                <div class="coming-soon">
+                    <h3>🚧 En construcción</h3>
+                    <p>Próximamente: Búsqueda Lineal, Búsqueda Binaria, Ordenamiento Burbuja, QuickSort, y más...</p>
+                </div>
+            </div>
+
             <!-- Classic Algorithms Tab Content -->
-            <div id="classic-tab" class="tab-content active">
+            <div id="classic-tab" class="tab-content">
 
                 <!-- A* Pathfinding Section -->
                 <section class="algorithm-section" id="astar-section">

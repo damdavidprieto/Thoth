@@ -15,6 +15,7 @@ Una aplicación web moderna e interactiva para visualizar y experimentar con alg
 - **🎯 A* Pathfinding**: Visualiza el algoritmo A* encontrando el camino más corto en un grid interactivo
 - **⛰️ Hill Climbing**: Observa cómo este algoritmo de búsqueda local encuentra máximos en funciones matemáticas
 - **🔥 Simulated Annealing**: Experimenta con optimización probabilística inspirada en el recocido metalúrgico
+- **🧬 Algoritmos Genéticos**: Observa la evolución de poblaciones mediante selección, cruce y mutación
 - **🎨 Diseño Moderno**: Interfaz premium con glassmorphism, gradientes y animaciones suaves
 - **⚡ Totalmente Interactivo**: Controla parámetros en tiempo real y observa los resultados
 
@@ -60,6 +61,7 @@ Algoritmo de optimización que siempre se mueve hacia la mejor solución vecina.
 - Visualización del recorrido de optimización
 - Puede quedar atrapado en máximos locales (¡inténtalo con Rastrigin!)
 
+
 ### Simulated Annealing
 Algoritmo probabilístico que acepta soluciones peores con cierta probabilidad que disminuye con el tiempo.
 
@@ -69,6 +71,20 @@ Algoritmo probabilístico que acepta soluciones peores con cierta probabilidad q
 - Visualización de la temperatura en tiempo real
 - Puede escapar de máximos locales
 - Contador de aceptaciones de soluciones
+
+### Algoritmos Genéticos
+Técnica de optimización inspirada en la evolución biológica que utiliza selección, cruce y mutación.
+
+**Características:**
+- Tamaño de población configurable (20-200 individuos)
+- Tasa de mutación ajustable (0.01-0.5)
+- Tasa de crossover configurable (0.5-1.0)
+- Visualización de la evolución generación por generación
+- Selección por torneo para elegir los mejores individuos
+- Crossover aritmético para combinar características
+- Mutación gaussiana para exploración
+- Elitismo: el mejor individuo siempre sobrevive
+- Estadísticas en tiempo real (mejor fitness, fitness promedio)
 
 ## 🎮 Cómo Usar
 
@@ -92,6 +108,15 @@ Algoritmo probabilístico que acepta soluciones peores con cierta probabilidad q
 3. Ajusta la tasa de enfriamiento (valores cercanos a 1 = enfriamiento lento)
 4. Presiona **"Ejecutar Simulated Annealing"**
 5. Observa la barra de temperatura y cómo el algoritmo explora el espacio de búsqueda
+
+### Algoritmos Genéticos
+1. Selecciona una función a optimizar
+2. Ajusta el tamaño de población (más individuos = mayor diversidad)
+3. Configura la tasa de mutación (mayor = más exploración aleatoria)
+4. Ajusta la tasa de crossover (mayor = más mezcla de características)
+5. Establece el número de generaciones
+6. Presiona **"Ejecutar Algoritmo Genético"**
+7. Observa cómo la población evoluciona, con puntos verdes representando individuos y el punto rojo el mejor
 
 ## 🛠️ Tecnologías
 
@@ -130,7 +155,7 @@ Las contribuciones son bienvenidas. Si tienes ideas para mejorar el proyecto:
 5. Abre un Pull Request
 
 ### Ideas para contribuir
-- Agregar más algoritmos heurísticos (Genetic Algorithms, Ant Colony, etc.)
+- Agregar más algoritmos heurísticos (Ant Colony, Particle Swarm, Tabu Search, etc.)
 - Implementar más funciones de prueba
 - Mejorar la visualización con gráficos 3D
 - Agregar modo de comparación entre algoritmos

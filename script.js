@@ -676,6 +676,315 @@ class SimulatedAnnealingVisualizer {
 }
 
 // ============================================
+// GENETIC ALGORITHM
+// ============================================
+
+class GeneticAlgorithmVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('genetic-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.populationSize = 50;
+        this.mutationRate = 0.1;
+        this.crossoverRate = 0.8;
+        this.generations = 30;
+        this.currentFunction = 'quadratic';
+        this.population = [];
+        this.generationHistory = [];
+        this.currentGeneration = 0;
+
+        this.setupEventListeners();
+        this.drawFunction();
+    }
+
+    setupEventListeners() {
+        document.getElementById('ga-function').addEventListener('change', (e) => {
+            this.currentFunction = e.target.value;
+            this.drawFunction();
+        });
+
+        document.getElementById('ga-population-size').addEventListener('input', (e) => {
+            this.populationSize = parseInt(e.target.value);
+            document.getElementById('ga-population-value').textContent = this.populationSize;
+        });
+
+        document.getElementById('ga-mutation-rate').addEventListener('input', (e) => {
+            this.mutationRate = parseFloat(e.target.value);
+            document.getElementById('ga-mutation-value').textContent = this.mutationRate.toFixed(2);
+        });
+
+        document.getElementById('ga-crossover-rate').addEventListener('input', (e) => {
+            this.crossoverRate = parseFloat(e.target.value);
+            document.getElementById('ga-crossover-value').textContent = this.crossoverRate.toFixed(2);
+        });
+
+        document.getElementById('ga-generations').addEventListener('input', (e) => {
+            this.generations = parseInt(e.target.value);
+            document.getElementById('ga-generations-value').textContent = this.generations;
+        });
+
+        document.getElementById('ga-start').addEventListener('click', () => this.runGeneticAlgorithm());
+        document.getElementById('ga-reset').addEventListener('click', () => this.reset());
+    }
+
+    evaluateFunction(x) {
+        switch (this.currentFunction) {
+            case 'quadratic':
+                return -(x - 5) * (x - 5) + 25;
+            case 'sine':
+                return Math.sin(x) * 10 + 15;
+            case 'rastrigin':
+                return 20 - (x * x - 10 * Math.cos(2 * Math.PI * x));
+            default:
+                return 0;
+        }
+    }
+
+    initializePopulation() {
+        this.population = [];
+        for (let i = 0; i < this.populationSize; i++) {
+            const x = Math.random() * 10;
+            this.population.push({
+                x: x,
+                fitness: this.evaluateFunction(x)
+            });
+        }
+    }
+
+    tournamentSelection() {
+        const tournamentSize = 3;
+        let best = this.population[Math.floor(Math.random() * this.population.length)];
+
+        for (let i = 1; i < tournamentSize; i++) {
+            const competitor = this.population[Math.floor(Math.random() * this.population.length)];
+            if (competitor.fitness > best.fitness) {
+                best = competitor;
+            }
+        }
+
+        return { ...best }; // Return a copy
+    }
+
+    crossover(parent1, parent2) {
+        if (Math.random() < this.crossoverRate) {
+            const alpha = Math.random();
+            const childX = alpha * parent1.x + (1 - alpha) * parent2.x;
+            return {
+                x: childX,
+                fitness: this.evaluateFunction(childX)
+            };
+        }
+        return { ...parent1 };
+    }
+
+    mutate(individual) {
+        if (Math.random() < this.mutationRate) {
+            // Gaussian mutation
+            const sigma = 0.5;
+            const mutation = this.gaussianRandom(0, sigma);
+            let newX = individual.x + mutation;
+
+            // Keep within bounds
+            newX = Math.max(0, Math.min(10, newX));
+
+            return {
+                x: newX,
+                fitness: this.evaluateFunction(newX)
+            };
+        }
+        return individual;
+    }
+
+    gaussianRandom(mean, sigma) {
+        // Box-Muller transform
+        const u1 = Math.random();
+        const u2 = Math.random();
+        const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        return mean + sigma * z0;
+    }
+
+    getBestIndividual() {
+        return this.population.reduce((best, ind) =>
+            ind.fitness > best.fitness ? ind : best
+        );
+    }
+
+    getAverageFitness() {
+        const sum = this.population.reduce((acc, ind) => acc + ind.fitness, 0);
+        return sum / this.population.length;
+    }
+
+    async runGeneticAlgorithm() {
+        this.initializePopulation();
+        this.generationHistory = [];
+        this.currentGeneration = 0;
+
+        for (let gen = 0; gen < this.generations; gen++) {
+            this.currentGeneration = gen + 1;
+
+            // Store statistics
+            const best = this.getBestIndividual();
+            const avgFitness = this.getAverageFitness();
+            this.generationHistory.push({
+                generation: gen + 1,
+                bestFitness: best.fitness,
+                avgFitness: avgFitness
+            });
+
+            // Create new population
+            const newPopulation = [];
+
+            // Elitism: keep the best individual
+            newPopulation.push({ ...best });
+
+            // Generate rest of population
+            while (newPopulation.length < this.populationSize) {
+                const parent1 = this.tournamentSelection();
+                const parent2 = this.tournamentSelection();
+
+                let child = this.crossover(parent1, parent2);
+                child = this.mutate(child);
+
+                newPopulation.push(child);
+            }
+
+            this.population = newPopulation;
+
+            // Update UI
+            this.updateStats();
+            this.drawFunction();
+            await this.sleep(100);
+        }
+
+        // Final update
+        this.updateStats();
+        this.drawFunction();
+    }
+
+    updateStats() {
+        const best = this.getBestIndividual();
+        const avgFitness = this.getAverageFitness();
+
+        document.getElementById('ga-generation').textContent = this.currentGeneration;
+        document.getElementById('ga-best-fitness').textContent = best.fitness.toFixed(3);
+        document.getElementById('ga-avg-fitness').textContent = avgFitness.toFixed(3);
+        document.getElementById('ga-best-position').textContent = best.x.toFixed(3);
+    }
+
+    reset() {
+        this.population = [];
+        this.generationHistory = [];
+        this.currentGeneration = 0;
+        document.getElementById('ga-generation').textContent = '0';
+        document.getElementById('ga-best-fitness').textContent = '-';
+        document.getElementById('ga-avg-fitness').textContent = '-';
+        document.getElementById('ga-best-position').textContent = '-';
+        this.drawFunction();
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    drawFunction() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const padding = 40;
+        const width = this.canvas.width - 2 * padding;
+        const height = this.canvas.height - 2 * padding;
+
+        // Draw axes
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(padding, this.canvas.height - padding);
+        this.ctx.lineTo(this.canvas.width - padding, this.canvas.height - padding);
+        this.ctx.moveTo(padding, padding);
+        this.ctx.lineTo(padding, this.canvas.height - padding);
+        this.ctx.stroke();
+
+        // Draw function
+        this.ctx.strokeStyle = '#667eea';
+        this.ctx.lineWidth = 3;
+        this.ctx.beginPath();
+
+        for (let px = 0; px <= width; px++) {
+            const x = (px / width) * 10;
+            const y = this.evaluateFunction(x);
+            const py = this.canvas.height - padding - ((y + 10) / 40) * height;
+
+            if (px === 0) {
+                this.ctx.moveTo(padding + px, py);
+            } else {
+                this.ctx.lineTo(padding + px, py);
+            }
+        }
+        this.ctx.stroke();
+
+        // Draw population
+        if (this.population.length > 0) {
+            const best = this.getBestIndividual();
+
+            for (const individual of this.population) {
+                const px = padding + (individual.x / 10) * width;
+                const py = this.canvas.height - padding - ((individual.fitness + 10) / 40) * height;
+
+                // Draw individual
+                const isBest = individual.x === best.x && individual.fitness === best.fitness;
+                this.ctx.fillStyle = isBest ? '#f5576c' : 'rgba(67, 233, 123, 0.6)';
+                this.ctx.beginPath();
+                this.ctx.arc(px, py, isBest ? 8 : 5, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                // Add glow to best
+                if (isBest) {
+                    this.ctx.strokeStyle = '#f5576c';
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.arc(px, py, 12, 0, Math.PI * 2);
+                    this.ctx.stroke();
+                }
+            }
+
+            // Draw generation info
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            this.ctx.font = '14px Inter';
+            this.ctx.fillText(`Generación: ${this.currentGeneration}`, padding + 10, padding + 20);
+            this.ctx.fillText(`Población: ${this.population.length}`, padding + 10, padding + 40);
+        }
+    }
+}
+
+// ============================================
+// TAB SWITCHING FUNCTION
+// ============================================
+
+function switchTab(tabName) {
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabContents.forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // Remove active class from all buttons
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // Show selected tab content
+    const selectedTab = document.getElementById(`${tabName}-tab`);
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+
+    // Add active class to clicked button
+    const clickedButton = event.target.closest('.tab-button');
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
+}
+
+// ============================================
 // TOGGLE PSEUDOCODE FUNCTION
 // ============================================
 
@@ -710,6 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new AStarVisualizer();
     new HillClimbingVisualizer();
     new SimulatedAnnealingVisualizer();
+    new GeneticAlgorithmVisualizer();
 
     // Initialize pseudocode panels
     initPseudocodePanels();

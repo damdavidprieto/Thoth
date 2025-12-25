@@ -683,10 +683,12 @@ function togglePseudocode(header) {
     const content = header.nextElementSibling;
     const icon = header.querySelector('.toggle-icon');
 
-    if (content.style.maxHeight) {
-        content.style.maxHeight = null;
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        // Collapse: set to 0
+        content.style.maxHeight = '0px';
         icon.textContent = '▶';
     } else {
+        // Expand: set to scrollHeight
         content.style.maxHeight = content.scrollHeight + 'px';
         icon.textContent = '▼';
     }

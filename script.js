@@ -1243,13 +1243,481 @@ function initPseudocodePanels() {
 }
 
 // ============================================
+// BASIC ALGORITHMS
+// ============================================
+
+// Linear Search
+class LinearSearchVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('linear-search-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 10;
+        this.target = 42;
+        this.currentIndex = -1;
+        this.found = false;
+        this.comparisons = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('ls-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('ls-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('ls-target').addEventListener('input', (e) => {
+            this.target = parseInt(e.target.value);
+        });
+
+        document.getElementById('ls-start').addEventListener('click', () => this.search());
+        document.getElementById('ls-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 1);
+        }
+        this.currentIndex = -1;
+        this.found = false;
+        this.comparisons = 0;
+        document.getElementById('ls-comparisons').textContent = '0';
+        document.getElementById('ls-result').textContent = '-';
+        this.draw();
+    }
+
+    async search() {
+        this.comparisons = 0;
+        this.found = false;
+
+        for (let i = 0; i < this.array.length; i++) {
+            this.currentIndex = i;
+            this.comparisons++;
+            document.getElementById('ls-comparisons').textContent = this.comparisons;
+            this.draw();
+            await this.sleep(300);
+
+            if (this.array[i] === this.target) {
+                this.found = true;
+                document.getElementById('ls-result').textContent = `Encontrado en posición ${i}`;
+                this.draw();
+                return;
+            }
+        }
+
+        this.currentIndex = -1;
+        document.getElementById('ls-result').textContent = 'No encontrado';
+        this.draw();
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const cellWidth = Math.min(50, (this.canvas.width - 40) / this.array.length);
+        const startX = (this.canvas.width - cellWidth * this.array.length) / 2;
+        const startY = this.canvas.height / 2 - 30;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = startX + i * cellWidth;
+
+            // Draw cell
+            if (i === this.currentIndex) {
+                this.ctx.fillStyle = this.found ? '#43e97b' : '#f5576c';
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.3)';
+            }
+            this.ctx.fillRect(x, startY, cellWidth - 2, 60);
+
+            // Draw border
+            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(x, startY, cellWidth - 2, 60);
+
+            // Draw value
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '16px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + cellWidth / 2 - 1, startY + 38);
+
+            // Draw index
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            this.ctx.font = '12px Inter';
+            this.ctx.fillText(i, x + cellWidth / 2 - 1, startY + 80);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// Binary Search
+class BinarySearchVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('binary-search-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 15;
+        this.target = 50;
+        this.left = -1;
+        this.right = -1;
+        this.mid = -1;
+        this.found = false;
+        this.comparisons = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('bs-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('bs-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('bs-target').addEventListener('input', (e) => {
+            this.target = parseInt(e.target.value);
+        });
+
+        document.getElementById('bs-start').addEventListener('click', () => this.search());
+        document.getElementById('bs-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 1);
+        }
+        this.array.sort((a, b) => a - b);
+        this.left = -1;
+        this.right = -1;
+        this.mid = -1;
+        this.found = false;
+        this.comparisons = 0;
+        document.getElementById('bs-comparisons').textContent = '0';
+        document.getElementById('bs-result').textContent = '-';
+        this.draw();
+    }
+
+    async search() {
+        this.comparisons = 0;
+        this.found = false;
+        this.left = 0;
+        this.right = this.array.length - 1;
+
+        while (this.left <= this.right) {
+            this.mid = Math.floor((this.left + this.right) / 2);
+            this.comparisons++;
+            document.getElementById('bs-comparisons').textContent = this.comparisons;
+            this.draw();
+            await this.sleep(500);
+
+            if (this.array[this.mid] === this.target) {
+                this.found = true;
+                document.getElementById('bs-result').textContent = `Encontrado en posición ${this.mid}`;
+                this.draw();
+                return;
+            }
+
+            if (this.array[this.mid] < this.target) {
+                this.left = this.mid + 1;
+            } else {
+                this.right = this.mid - 1;
+            }
+        }
+
+        this.left = -1;
+        this.right = -1;
+        this.mid = -1;
+        document.getElementById('bs-result').textContent = 'No encontrado';
+        this.draw();
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const cellWidth = Math.min(40, (this.canvas.width - 40) / this.array.length);
+        const startX = (this.canvas.width - cellWidth * this.array.length) / 2;
+        const startY = this.canvas.height / 2 - 30;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = startX + i * cellWidth;
+
+            // Draw cell
+            if (i === this.mid) {
+                this.ctx.fillStyle = this.found ? '#43e97b' : '#f5576c';
+            } else if (i >= this.left && i <= this.right) {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.5)';
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.1)';
+            }
+            this.ctx.fillRect(x, startY, cellWidth - 2, 60);
+
+            // Draw border
+            this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(x, startY, cellWidth - 2, 60);
+
+            // Draw value
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '14px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + cellWidth / 2 - 1, startY + 38);
+
+            // Draw index
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            this.ctx.font = '11px Inter';
+            this.ctx.fillText(i, x + cellWidth / 2 - 1, startY + 80);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// Bubble Sort
+class BubbleSortVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('bubble-sort-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 10;
+        this.speed = 100;
+        this.comparisons = 0;
+        this.swaps = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('bubble-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('bubble-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('bubble-speed').addEventListener('input', (e) => {
+            this.speed = parseInt(e.target.value);
+            document.getElementById('bubble-speed-value').textContent = this.speed + 'ms';
+        });
+
+        document.getElementById('bubble-start').addEventListener('click', () => this.sort());
+        document.getElementById('bubble-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 10);
+        }
+        this.comparisons = 0;
+        this.swaps = 0;
+        document.getElementById('bubble-comparisons').textContent = '0';
+        document.getElementById('bubble-swaps').textContent = '0';
+        this.draw();
+    }
+
+    async sort() {
+        this.comparisons = 0;
+        this.swaps = 0;
+        const n = this.array.length;
+
+        for (let i = 0; i < n - 1; i++) {
+            let swapped = false;
+
+            for (let j = 0; j < n - i - 1; j++) {
+                this.comparisons++;
+                document.getElementById('bubble-comparisons').textContent = this.comparisons;
+
+                this.draw(j, j + 1, n - i);
+                await this.sleep(this.speed);
+
+                if (this.array[j] > this.array[j + 1]) {
+                    // Swap
+                    [this.array[j], this.array[j + 1]] = [this.array[j + 1], this.array[j]];
+                    swapped = true;
+                    this.swaps++;
+                    document.getElementById('bubble-swaps').textContent = this.swaps;
+                    this.draw(j, j + 1, n - i);
+                    await this.sleep(this.speed);
+                }
+            }
+
+            if (!swapped) break;
+        }
+
+        this.draw(-1, -1, 0);
+    }
+
+    draw(compareIdx1 = -1, compareIdx2 = -1, sortedFrom = 0) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const barWidth = (this.canvas.width - 80) / this.array.length;
+        const maxHeight = this.canvas.height - 80;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = 40 + i * barWidth;
+            const height = (this.array[i] / 110) * maxHeight;
+            const y = this.canvas.height - 40 - height;
+
+            // Color based on state
+            if (i >= this.array.length - sortedFrom + 1) {
+                this.ctx.fillStyle = '#43e97b'; // Sorted
+            } else if (i === compareIdx1 || i === compareIdx2) {
+                this.ctx.fillStyle = '#f5576c'; // Comparing
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            }
+
+            this.ctx.fillRect(x, y, barWidth - 4, height);
+
+            // Draw value
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '12px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + barWidth / 2 - 2, y - 5);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// Selection Sort
+class SelectionSortVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('selection-sort-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 10;
+        this.speed = 100;
+        this.comparisons = 0;
+        this.swaps = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('selection-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('selection-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('selection-speed').addEventListener('input', (e) => {
+            this.speed = parseInt(e.target.value);
+            document.getElementById('selection-speed-value').textContent = this.speed + 'ms';
+        });
+
+        document.getElementById('selection-start').addEventListener('click', () => this.sort());
+        document.getElementById('selection-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 10);
+        }
+        this.comparisons = 0;
+        this.swaps = 0;
+        document.getElementById('selection-comparisons').textContent = '0';
+        document.getElementById('selection-swaps').textContent = '0';
+        this.draw();
+    }
+
+    async sort() {
+        this.comparisons = 0;
+        this.swaps = 0;
+        const n = this.array.length;
+
+        for (let i = 0; i < n - 1; i++) {
+            let minIdx = i;
+
+            for (let j = i + 1; j < n; j++) {
+                this.comparisons++;
+                document.getElementById('selection-comparisons').textContent = this.comparisons;
+
+                this.draw(i, j, minIdx, i);
+                await this.sleep(this.speed);
+
+                if (this.array[j] < this.array[minIdx]) {
+                    minIdx = j;
+                }
+            }
+
+            if (minIdx !== i) {
+                [this.array[i], this.array[minIdx]] = [this.array[minIdx], this.array[i]];
+                this.swaps++;
+                document.getElementById('selection-swaps').textContent = this.swaps;
+                this.draw(i, -1, minIdx, i);
+                await this.sleep(this.speed);
+            }
+        }
+
+        this.draw(-1, -1, -1, n);
+    }
+
+    draw(currentIdx = -1, compareIdx = -1, minIdx = -1, sortedUntil = 0) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const barWidth = (this.canvas.width - 80) / this.array.length;
+        const maxHeight = this.canvas.height - 80;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = 40 + i * barWidth;
+            const height = (this.array[i] / 110) * maxHeight;
+            const y = this.canvas.height - 40 - height;
+
+            // Color based on state
+            if (i < sortedUntil) {
+                this.ctx.fillStyle = '#43e97b'; // Sorted
+            } else if (i === minIdx) {
+                this.ctx.fillStyle = '#f5576c'; // Current minimum
+            } else if (i === currentIdx) {
+                this.ctx.fillStyle = '#ffd93d'; // Current position
+            } else if (i === compareIdx) {
+                this.ctx.fillStyle = 'rgba(245, 87, 108, 0.5)'; // Comparing
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            }
+
+            this.ctx.fillRect(x, y, barWidth - 4, height);
+
+            // Draw value
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '12px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + barWidth / 2 - 2, y - 5);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// ============================================
 // INITIALIZE ALL VISUALIZERS
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Basic Algorithms
+    new LinearSearchVisualizer();
+    new BinarySearchVisualizer();
+    new BubbleSortVisualizer();
+    new SelectionSortVisualizer();
+
+    // Heuristic Algorithms
     new AStarVisualizer();
     new HillClimbingVisualizer();
     new SimulatedAnnealingVisualizer();
+
+    // Evolutionary Algorithms
     new GeneticAlgorithmVisualizer();
     new ParticleSwarmVisualizer();
 

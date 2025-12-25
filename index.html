@@ -55,11 +55,350 @@
                         básicos.</p>
                 </div>
 
-                <!-- Placeholder for basic algorithms -->
-                <div class="coming-soon">
-                    <h3>🚧 En construcción</h3>
-                    <p>Próximamente: Búsqueda Lineal, Búsqueda Binaria, Ordenamiento Burbuja, QuickSort, y más...</p>
-                </div>
+                <!-- Linear Search Section -->
+                <section class="algorithm-section" id="linear-search-section">
+                    <div class="section-header">
+                        <h2>🔍 Búsqueda Lineal</h2>
+                        <p class="section-description">El algoritmo de búsqueda más simple: revisa cada elemento uno por
+                            uno</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array Interactivo</h3>
+                            </div>
+                            <canvas id="linear-search-canvas" width="600" height="200"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Búsqueda Lineal</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion BusquedaLineal(array, objetivo):
+    para i desde 0 hasta longitud(array) - 1:
+        si array[i] == objetivo:
+            retornar i  // Elemento encontrado en posición i
+    
+    retornar -1  // Elemento no encontrado
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n) - En el peor caso,
+                                        debe revisar todos los elementos.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="ls-array-size">Tamaño del Array</label>
+                                <input type="range" id="ls-array-size" min="5" max="20" value="10" step="1">
+                                <span class="value-display" id="ls-size-value">10</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="ls-target">Número a Buscar</label>
+                                <input type="number" id="ls-target" min="1" max="100" value="42">
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="ls-start">
+                                    <span class="btn-icon">▶</span> Buscar
+                                </button>
+                                <button class="btn btn-secondary" id="ls-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="ls-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Resultado:</span>
+                                    <span class="stat-value" id="ls-result">-</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Búsqueda Lineal:</strong></p>
+                                <p>El algoritmo más simple. Revisa cada elemento secuencialmente hasta encontrar el
+                                    objetivo o llegar al final.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Binary Search Section -->
+                <section class="algorithm-section" id="binary-search-section">
+                    <div class="section-header">
+                        <h2>🎯 Búsqueda Binaria</h2>
+                        <p class="section-description">Búsqueda eficiente en arrays ordenados mediante división y
+                            conquista</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array Ordenado</h3>
+                            </div>
+                            <canvas id="binary-search-canvas" width="600" height="200"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Búsqueda Binaria</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion BusquedaBinaria(array_ordenado, objetivo):
+    izquierda = 0
+    derecha = longitud(array_ordenado) - 1
+    
+    mientras izquierda <= derecha:
+        medio = (izquierda + derecha) / 2
+        
+        si array_ordenado[medio] == objetivo:
+            retornar medio  // Encontrado
+        
+        si array_ordenado[medio] < objetivo:
+            izquierda = medio + 1  // Buscar en mitad derecha
+        sino:
+            derecha = medio - 1    // Buscar en mitad izquierda
+    
+    retornar -1  // No encontrado
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(log n) - Divide el
+                                        espacio de búsqueda a la mitad en cada paso. Requiere array ordenado.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="bs-array-size">Tamaño del Array</label>
+                                <input type="range" id="bs-array-size" min="5" max="20" value="15" step="1">
+                                <span class="value-display" id="bs-size-value">15</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="bs-target">Número a Buscar</label>
+                                <input type="number" id="bs-target" min="1" max="100" value="50">
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="bs-start">
+                                    <span class="btn-icon">▶</span> Buscar
+                                </button>
+                                <button class="btn btn-secondary" id="bs-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="bs-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Resultado:</span>
+                                    <span class="stat-value" id="bs-result">-</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Búsqueda Binaria:</strong></p>
+                                <p>Mucho más eficiente que la búsqueda lineal, pero requiere que el array esté ordenado.
+                                    Divide el espacio de búsqueda a la mitad en cada paso.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bubble Sort Section -->
+                <section class="algorithm-section" id="bubble-sort-section">
+                    <div class="section-header">
+                        <h2>🫧 Ordenamiento Burbuja</h2>
+                        <p class="section-description">Algoritmo de ordenamiento simple que compara elementos adyacentes
+                        </p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array a Ordenar</h3>
+                            </div>
+                            <canvas id="bubble-sort-canvas" width="600" height="300"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Bubble Sort</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion BubbleSort(array):
+    n = longitud(array)
+    
+    para i desde 0 hasta n - 1:
+        intercambiado = falso
+        
+        para j desde 0 hasta n - i - 2:
+            si array[j] > array[j + 1]:
+                // Intercambiar elementos
+                temp = array[j]
+                array[j] = array[j + 1]
+                array[j + 1] = temp
+                intercambiado = verdadero
+        
+        // Si no hubo intercambios, ya está ordenado
+        si no intercambiado:
+            romper
+    
+    retornar array
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) - Compara cada par de
+                                        elementos adyacentes repetidamente.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="bubble-array-size">Tamaño del Array</label>
+                                <input type="range" id="bubble-array-size" min="5" max="20" value="10" step="1">
+                                <span class="value-display" id="bubble-size-value">10</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="bubble-speed">Velocidad</label>
+                                <input type="range" id="bubble-speed" min="10" max="200" value="100" step="10">
+                                <span class="value-display" id="bubble-speed-value">100ms</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="bubble-start">
+                                    <span class="btn-icon">▶</span> Ordenar
+                                </button>
+                                <button class="btn btn-secondary" id="bubble-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="bubble-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Intercambios:</span>
+                                    <span class="stat-value" id="bubble-swaps">0</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Bubble Sort:</strong></p>
+                                <p>Los elementos más grandes "burbujean" hacia el final del array en cada pasada. Simple
+                                    pero ineficiente para arrays grandes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Selection Sort Section -->
+                <section class="algorithm-section" id="selection-sort-section">
+                    <div class="section-header">
+                        <h2>🎯 Ordenamiento por Selección</h2>
+                        <p class="section-description">Encuentra el mínimo y lo coloca en su posición correcta</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array a Ordenar</h3>
+                            </div>
+                            <canvas id="selection-sort-canvas" width="600" height="300"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Selection Sort</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion SelectionSort(array):
+    n = longitud(array)
+    
+    para i desde 0 hasta n - 2:
+        // Encontrar el índice del mínimo
+        indice_minimo = i
+        
+        para j desde i + 1 hasta n - 1:
+            si array[j] < array[indice_minimo]:
+                indice_minimo = j
+        
+        // Intercambiar el mínimo con el elemento actual
+        si indice_minimo != i:
+            temp = array[i]
+            array[i] = array[indice_minimo]
+            array[indice_minimo] = temp
+    
+    retornar array
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) - Encuentra el mínimo
+                                        en cada iteración y lo coloca en su posición.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="selection-array-size">Tamaño del Array</label>
+                                <input type="range" id="selection-array-size" min="5" max="20" value="10" step="1">
+                                <span class="value-display" id="selection-size-value">10</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="selection-speed">Velocidad</label>
+                                <input type="range" id="selection-speed" min="10" max="200" value="100" step="10">
+                                <span class="value-display" id="selection-speed-value">100ms</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="selection-start">
+                                    <span class="btn-icon">▶</span> Ordenar
+                                </button>
+                                <button class="btn btn-secondary" id="selection-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="selection-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Intercambios:</span>
+                                    <span class="stat-value" id="selection-swaps">0</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Selection Sort:</strong></p>
+                                <p>En cada pasada, encuentra el elemento más pequeño y lo coloca en su posición final.
+                                    Hace menos intercambios que Bubble Sort.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
             <!-- Classic Algorithms Tab Content -->

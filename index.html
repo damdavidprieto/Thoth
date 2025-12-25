@@ -55,6 +55,46 @@
                             </div>
                         </div>
                         <canvas id="astar-canvas" width="600" height="600"></canvas>
+
+                        <div class="pseudocode-box">
+                            <h4>📋 Pseudocódigo A*</h4>
+                            <pre class="pseudocode">
+funcion A_Estrella(inicio, objetivo):
+    abiertos = [inicio]              // Nodos por explorar
+    cerrados = []                    // Nodos ya visitados
+    
+    g[inicio] = 0                    // Costo desde inicio
+    f[inicio] = heuristica(inicio, objetivo)  // Estimación total
+    
+    mientras abiertos no esté vacío:
+        actual = nodo con menor f en abiertos
+        
+        si actual == objetivo:
+            retornar reconstruir_camino(actual)
+        
+        mover actual de abiertos a cerrados
+        
+        para cada vecino de actual:
+            si vecino en cerrados:
+                continuar
+            
+            g_tentativo = g[actual] + distancia(actual, vecino)
+            
+            si vecino no en abiertos:
+                agregar vecino a abiertos
+            sino si g_tentativo >= g[vecino]:
+                continuar  // No es mejor camino
+            
+            // Este es el mejor camino hasta ahora
+            padre[vecino] = actual
+            g[vecino] = g_tentativo
+            f[vecino] = g[vecino] + heuristica(vecino, objetivo)
+    
+    retornar "No hay camino"
+</pre>
+                            <p class="pseudocode-note"><strong>Clave:</strong> La heurística (distancia Manhattan) guía
+                                la búsqueda hacia el objetivo, haciendo que A* sea más eficiente que Dijkstra.</p>
+                        </div>
                     </div>
 
                     <div class="controls-panel glass-panel">
@@ -107,46 +147,6 @@
                                 <li>Presiona "Ejecutar A*" para ver el algoritmo en acción</li>
                             </ul>
                         </div>
-
-                        <div class="pseudocode-box">
-                            <h4>📋 Pseudocódigo A*</h4>
-                            <pre class="pseudocode">
-funcion A_Estrella(inicio, objetivo):
-    abiertos = [inicio]              // Nodos por explorar
-    cerrados = []                    // Nodos ya visitados
-    
-    g[inicio] = 0                    // Costo desde inicio
-    f[inicio] = heuristica(inicio, objetivo)  // Estimación total
-    
-    mientras abiertos no esté vacío:
-        actual = nodo con menor f en abiertos
-        
-        si actual == objetivo:
-            retornar reconstruir_camino(actual)
-        
-        mover actual de abiertos a cerrados
-        
-        para cada vecino de actual:
-            si vecino en cerrados:
-                continuar
-            
-            g_tentativo = g[actual] + distancia(actual, vecino)
-            
-            si vecino no en abiertos:
-                agregar vecino a abiertos
-            sino si g_tentativo >= g[vecino]:
-                continuar  // No es mejor camino
-            
-            // Este es el mejor camino hasta ahora
-            padre[vecino] = actual
-            g[vecino] = g_tentativo
-            f[vecino] = g[vecino] + heuristica(vecino, objetivo)
-    
-    retornar "No hay camino"
-</pre>
-                            <p class="pseudocode-note"><strong>Clave:</strong> La heurística (distancia Manhattan) guía
-                                la búsqueda hacia el objetivo, haciendo que A* sea más eficiente que Dijkstra.</p>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -174,6 +174,41 @@ funcion A_Estrella(inicio, objetivo):
                             <h3>Superficie de Optimización</h3>
                         </div>
                         <canvas id="hillclimbing-canvas" width="600" height="400"></canvas>
+
+                        <div class="pseudocode-box">
+                            <h4>📋 Pseudocódigo Hill Climbing</h4>
+                            <pre class="pseudocode">
+funcion HillClimbing(funcion_objetivo, max_iteraciones):
+    actual = solución_aleatoria()   // Punto de partida
+    valor_actual = evaluar(actual)
+    
+    para i desde 1 hasta max_iteraciones:
+        vecinos = generar_vecinos(actual)  // Soluciones cercanas
+        
+        mejor_vecino = null
+        mejor_valor = valor_actual
+        
+        // Buscar el mejor vecino
+        para cada vecino en vecinos:
+            valor_vecino = evaluar(vecino)
+            
+            si valor_vecino > mejor_valor:
+                mejor_vecino = vecino
+                mejor_valor = valor_vecino
+        
+        // Si no hay mejora, hemos llegado a un máximo local
+        si mejor_valor <= valor_actual:
+            romper  // Terminar búsqueda
+        
+        // Moverse al mejor vecino
+        actual = mejor_vecino
+        valor_actual = mejor_valor
+    
+    retornar actual, valor_actual
+</pre>
+                            <p class="pseudocode-note"><strong>Limitación:</strong> Siempre sube, nunca baja. Puede
+                                quedar atrapado en máximos locales sin encontrar el óptimo global.</p>
+                        </div>
                     </div>
 
                     <div class="controls-panel glass-panel">
@@ -234,41 +269,6 @@ funcion A_Estrella(inicio, objetivo):
                             </div>
                         </div>
                     </div>
-
-                    <div class="pseudocode-box">
-                        <h4>📋 Pseudocódigo Hill Climbing</h4>
-                        <pre class="pseudocode">
-funcion HillClimbing(funcion_objetivo, max_iteraciones):
-    actual = solución_aleatoria()   // Punto de partida
-    valor_actual = evaluar(actual)
-    
-    para i desde 1 hasta max_iteraciones:
-        vecinos = generar_vecinos(actual)  // Soluciones cercanas
-        
-        mejor_vecino = null
-        mejor_valor = valor_actual
-        
-        // Buscar el mejor vecino
-        para cada vecino en vecinos:
-            valor_vecino = evaluar(vecino)
-            
-            si valor_vecino > mejor_valor:
-                mejor_vecino = vecino
-                mejor_valor = valor_vecino
-        
-        // Si no hay mejora, hemos llegado a un máximo local
-        si mejor_valor <= valor_actual:
-            romper  // Terminar búsqueda
-        
-        // Moverse al mejor vecino
-        actual = mejor_vecino
-        valor_actual = mejor_valor
-    
-    retornar actual, valor_actual
-</pre>
-                        <p class="pseudocode-note"><strong>Limitación:</strong> Siempre sube, nunca baja. Puede quedar
-                            atrapado en máximos locales sin encontrar el óptimo global.</p>
-                    </div>
                 </div>
         </div>
         </section>
@@ -303,6 +303,41 @@ funcion HillClimbing(funcion_objetivo, max_iteraciones):
                             <div class="temp-bar-fill" id="temp-bar"></div>
                         </div>
                         <span id="temp-value">100</span>
+                    </div>
+
+                    <div class="pseudocode-box">
+                        <h4>📋 Pseudocódigo Simulated Annealing</h4>
+                        <pre class="pseudocode">
+funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
+    actual = solución_aleatoria()
+    mejor = actual
+    temperatura = temp_inicial
+    
+    para i desde 1 hasta max_iter:
+        vecino = generar_vecino_aleatorio(actual)
+        
+        delta = evaluar(vecino) - evaluar(actual)
+        
+        // Aceptar si es mejor O con cierta probabilidad si es peor
+        si delta > 0:  // Mejor solución
+            actual = vecino
+            si evaluar(vecino) > evaluar(mejor):
+                mejor = vecino
+        
+        sino:  // Peor solución
+            probabilidad = exp(delta / temperatura)
+            
+            si random() < probabilidad:
+                actual = vecino  // Aceptar empeoramiento
+        
+        // Enfriar gradualmente
+        temperatura = temperatura * tasa_enfriamiento
+    
+    retornar mejor
+</pre>
+                        <p class="pseudocode-note"><strong>Ventaja:</strong> La aceptación probabilística de soluciones
+                            peores permite escapar de máximos locales. La temperatura controla cuánta "exploración" vs
+                            "explotación".</p>
                     </div>
                 </div>
 
@@ -372,41 +407,6 @@ funcion HillClimbing(funcion_objetivo, max_iteraciones):
                             <em>"A veces, retroceder un paso te permite saltar más lejos. La aleatoriedad controlada
                                 es sabiduría disfrazada." - "Principio del recocido simulado"</em>
                         </div>
-                    </div>
-
-                    <div class="pseudocode-box">
-                        <h4>📋 Pseudocódigo Simulated Annealing</h4>
-                        <pre class="pseudocode">
-funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
-    actual = solución_aleatoria()
-    mejor = actual
-    temperatura = temp_inicial
-    
-    para i desde 1 hasta max_iter:
-        vecino = generar_vecino_aleatorio(actual)
-        
-        delta = evaluar(vecino) - evaluar(actual)
-        
-        // Aceptar si es mejor O con cierta probabilidad si es peor
-        si delta > 0:  // Mejor solución
-            actual = vecino
-            si evaluar(vecino) > evaluar(mejor):
-                mejor = vecino
-        
-        sino:  // Peor solución
-            probabilidad = exp(delta / temperatura)
-            
-            si random() < probabilidad:
-                actual = vecino  // Aceptar empeoramiento
-        
-        // Enfriar gradualmente
-        temperatura = temperatura * tasa_enfriamiento
-    
-    retornar mejor
-</pre>
-                        <p class="pseudocode-note"><strong>Ventaja:</strong> La aceptación probabilística de
-                            soluciones peores permite escapar de máximos locales. La temperatura controla cuánta
-                            "exploración" vs "explotación".</p>
                     </div>
                 </div>
             </div>

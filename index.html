@@ -623,6 +623,160 @@ funcion mutar(individuo):
                     </div>
                 </section>
 
+                <!-- Riddle Divider 4 -->
+                <div class="riddle-divider">
+                    <div class="riddle-content">
+                        <span class="riddle-icon">🐦</span>
+                        <p class="riddle-text">Acertijo: Como una bandada de pájaros, nos movemos juntos. Cada uno
+                            aprende
+                            de su mejor experiencia y de la del grupo. Convergemos hacia la solución óptima sin
+                            necesidad
+                            de genes. ¿Qué algoritmo soy?</p>
+                        <p class="riddle-answer" id="riddle4">Respuesta: Particle Swarm Optimization</p>
+                    </div>
+                </div>
+
+                <!-- Particle Swarm Optimization Section -->
+                <section class="algorithm-section" id="pso-section">
+                    <div class="section-header">
+                        <h2>🐦 Particle Swarm Optimization</h2>
+                        <p class="section-description">Optimización basada en el comportamiento de enjambres</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Movimiento del Enjambre</h3>
+                            </div>
+                            <canvas id="pso-canvas" width="600" height="400"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo PSO</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion ParticleSwarmOptimization(num_particulas, max_iteraciones):
+    // Inicializar enjambre
+    para cada particula i:
+        posicion[i] = random()
+        velocidad[i] = random()
+        mejor_personal[i] = posicion[i]
+    
+    mejor_global = particula_con_mejor_fitness()
+    
+    para iter desde 1 hasta max_iteraciones:
+        para cada particula i:
+            // Actualizar velocidad
+            componente_cognitivo = c1 * random() * (mejor_personal[i] - posicion[i])
+            componente_social = c2 * random() * (mejor_global - posicion[i])
+            inercia = w * velocidad[i]
+            
+            velocidad[i] = inercia + componente_cognitivo + componente_social
+            
+            // Actualizar posición
+            posicion[i] = posicion[i] + velocidad[i]
+            
+            // Actualizar mejor personal
+            si fitness(posicion[i]) > fitness(mejor_personal[i]):
+                mejor_personal[i] = posicion[i]
+            
+            // Actualizar mejor global
+            si fitness(posicion[i]) > fitness(mejor_global):
+                mejor_global = posicion[i]
+    
+    retornar mejor_global
+</pre>
+                                    <p class="pseudocode-note"><strong>Clave:</strong> Cada partícula se mueve
+                                        influenciada
+                                        por su mejor posición histórica (componente cognitivo) y la mejor posición
+                                        global del
+                                        enjambre (componente social). La inercia mantiene la dirección previa.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="pso-function">Función a Optimizar</label>
+                                <select id="pso-function">
+                                    <option value="quadratic">Cuadrática Simple</option>
+                                    <option value="sine">Función Seno</option>
+                                    <option value="rastrigin">Rastrigin (múltiples máximos)</option>
+                                </select>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="pso-num-particles">Número de Partículas</label>
+                                <input type="range" id="pso-num-particles" min="10" max="100" value="30" step="5">
+                                <span class="value-display" id="pso-particles-value">30</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="pso-inertia">Inercia (w)</label>
+                                <input type="range" id="pso-inertia" min="0.1" max="0.9" value="0.7" step="0.1">
+                                <span class="value-display" id="pso-inertia-value">0.7</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="pso-cognitive">Coef. Cognitivo (c1)</label>
+                                <input type="range" id="pso-cognitive" min="0.5" max="2.5" value="1.5" step="0.1">
+                                <span class="value-display" id="pso-cognitive-value">1.5</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="pso-social">Coef. Social (c2)</label>
+                                <input type="range" id="pso-social" min="0.5" max="2.5" value="1.5" step="0.1">
+                                <span class="value-display" id="pso-social-value">1.5</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="pso-iterations">Iteraciones</label>
+                                <input type="range" id="pso-iterations" min="20" max="200" value="100" step="10">
+                                <span class="value-display" id="pso-iterations-value">100</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="pso-start">
+                                    <span class="btn-icon">▶</span> Ejecutar PSO
+                                </button>
+                                <button class="btn btn-secondary" id="pso-reset">
+                                    <span class="btn-icon">↻</span> Reiniciar
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Resultados</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Iteración:</span>
+                                    <span class="stat-value" id="pso-iteration">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Mejor Fitness:</span>
+                                    <span class="stat-value" id="pso-best-fitness">-</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Mejor Posición:</span>
+                                    <span class="stat-value" id="pso-best-position">-</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre PSO:</strong></p>
+                                <p>Inspirado en el comportamiento social de bandadas de pájaros. Las partículas se
+                                    mueven
+                                    influenciadas por su experiencia personal y la del grupo.</p>
+                                <div class="quote-mini">
+                                    <em>"La sabiduría del enjambre supera la del individuo. Juntos encontramos lo que
+                                        solos
+                                        no podríamos." - "Inteligencia colectiva"</em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
             <!-- End Evolutionary Algorithms Tab -->
 

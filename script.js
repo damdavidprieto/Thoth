@@ -955,6 +955,237 @@ class GeneticAlgorithmVisualizer {
 }
 
 // ============================================
+// PARTICLE SWARM OPTIMIZATION
+// ============================================
+
+class ParticleSwarmVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('pso-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.numParticles = 30;
+        this.inertia = 0.7;
+        this.cognitive = 1.5;
+        this.social = 1.5;
+        this.maxIterations = 100;
+        this.currentFunction = 'quadratic';
+        this.particles = [];
+        this.globalBest = null;
+        this.currentIteration = 0;
+
+        this.setupEventListeners();
+        this.drawFunction();
+    }
+
+    setupEventListeners() {
+        document.getElementById('pso-function').addEventListener('change', (e) => {
+            this.currentFunction = e.target.value;
+            this.drawFunction();
+        });
+
+        document.getElementById('pso-num-particles').addEventListener('input', (e) => {
+            this.numParticles = parseInt(e.target.value);
+            document.getElementById('pso-particles-value').textContent = this.numParticles;
+        });
+
+        document.getElementById('pso-inertia').addEventListener('input', (e) => {
+            this.inertia = parseFloat(e.target.value);
+            document.getElementById('pso-inertia-value').textContent = this.inertia.toFixed(1);
+        });
+
+        document.getElementById('pso-cognitive').addEventListener('input', (e) => {
+            this.cognitive = parseFloat(e.target.value);
+            document.getElementById('pso-cognitive-value').textContent = this.cognitive.toFixed(1);
+        });
+
+        document.getElementById('pso-social').addEventListener('input', (e) => {
+            this.social = parseFloat(e.target.value);
+            document.getElementById('pso-social-value').textContent = this.social.toFixed(1);
+        });
+
+        document.getElementById('pso-iterations').addEventListener('input', (e) => {
+            this.maxIterations = parseInt(e.target.value);
+            document.getElementById('pso-iterations-value').textContent = this.maxIterations;
+        });
+
+        document.getElementById('pso-start').addEventListener('click', () => this.runPSO());
+        document.getElementById('pso-reset').addEventListener('click', () => this.reset());
+    }
+
+    evaluateFunction(x) {
+        switch (this.currentFunction) {
+            case 'quadratic':
+                return -(x - 5) * (x - 5) + 25;
+            case 'sine':
+                return Math.sin(x) * 10 + 15;
+            case 'rastrigin':
+                return 20 - (x * x - 10 * Math.cos(2 * Math.PI * x));
+            default:
+                return 0;
+        }
+    }
+
+    initializeSwarm() {
+        this.particles = [];
+        for (let i = 0; i < this.numParticles; i++) {
+            const x = Math.random() * 10;
+            const particle = {
+                x: x,
+                velocity: (Math.random() - 0.5) * 2,
+                fitness: this.evaluateFunction(x),
+                bestX: x,
+                bestFitness: this.evaluateFunction(x)
+            };
+            this.particles.push(particle);
+        }
+
+        // Find global best
+        this.globalBest = this.particles.reduce((best, p) =>
+            p.fitness > best.fitness ? p : best
+        );
+    }
+
+    async runPSO() {
+        this.initializeSwarm();
+        this.currentIteration = 0;
+
+        for (let iter = 0; iter < this.maxIterations; iter++) {
+            this.currentIteration = iter + 1;
+
+            // Update each particle
+            for (const particle of this.particles) {
+                // Update velocity
+                const r1 = Math.random();
+                const r2 = Math.random();
+
+                const cognitiveComponent = this.cognitive * r1 * (particle.bestX - particle.x);
+                const socialComponent = this.social * r2 * (this.globalBest.x - particle.x);
+
+                particle.velocity = this.inertia * particle.velocity + cognitiveComponent + socialComponent;
+
+                // Limit velocity
+                particle.velocity = Math.max(-2, Math.min(2, particle.velocity));
+
+                // Update position
+                particle.x += particle.velocity;
+
+                // Keep within bounds
+                particle.x = Math.max(0, Math.min(10, particle.x));
+
+                // Evaluate fitness
+                particle.fitness = this.evaluateFunction(particle.x);
+
+                // Update personal best
+                if (particle.fitness > particle.bestFitness) {
+                    particle.bestX = particle.x;
+                    particle.bestFitness = particle.fitness;
+                }
+
+                // Update global best
+                if (particle.fitness > this.globalBest.fitness) {
+                    this.globalBest = {
+                        x: particle.x,
+                        fitness: particle.fitness
+                    };
+                }
+            }
+
+            // Update UI
+            this.updateStats();
+            this.drawFunction();
+            await this.sleep(50);
+        }
+    }
+
+    updateStats() {
+        document.getElementById('pso-iteration').textContent = this.currentIteration;
+        document.getElementById('pso-best-fitness').textContent = this.globalBest.fitness.toFixed(3);
+        document.getElementById('pso-best-position').textContent = this.globalBest.x.toFixed(3);
+    }
+
+    reset() {
+        this.particles = [];
+        this.globalBest = null;
+        this.currentIteration = 0;
+        document.getElementById('pso-iteration').textContent = '0';
+        document.getElementById('pso-best-fitness').textContent = '-';
+        document.getElementById('pso-best-position').textContent = '-';
+        this.drawFunction();
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    drawFunction() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const padding = 40;
+        const width = this.canvas.width - 2 * padding;
+        const height = this.canvas.height - 2 * padding;
+
+        // Draw axes
+        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        this.ctx.lineWidth = 2;
+        this.ctx.beginPath();
+        this.ctx.moveTo(padding, this.canvas.height - padding);
+        this.ctx.lineTo(this.canvas.width - padding, this.canvas.height - padding);
+        this.ctx.moveTo(padding, padding);
+        this.ctx.lineTo(padding, this.canvas.height - padding);
+        this.ctx.stroke();
+
+        // Draw function
+        this.ctx.strokeStyle = '#667eea';
+        this.ctx.lineWidth = 3;
+        this.ctx.beginPath();
+
+        for (let px = 0; px <= width; px++) {
+            const x = (px / width) * 10;
+            const y = this.evaluateFunction(x);
+            const py = this.canvas.height - padding - ((y + 10) / 40) * height;
+
+            if (px === 0) {
+                this.ctx.moveTo(padding + px, py);
+            } else {
+                this.ctx.lineTo(padding + px, py);
+            }
+        }
+        this.ctx.stroke();
+
+        // Draw particles
+        if (this.particles.length > 0) {
+            for (const particle of this.particles) {
+                const px = padding + (particle.x / 10) * width;
+                const py = this.canvas.height - padding - ((particle.fitness + 10) / 40) * height;
+
+                // Draw particle
+                const isGlobalBest = particle.x === this.globalBest.x && particle.fitness === this.globalBest.fitness;
+                this.ctx.fillStyle = isGlobalBest ? '#f5576c' : 'rgba(67, 233, 123, 0.7)';
+                this.ctx.beginPath();
+                this.ctx.arc(px, py, isGlobalBest ? 8 : 5, 0, Math.PI * 2);
+                this.ctx.fill();
+
+                // Draw velocity vector
+                if (!isGlobalBest) {
+                    const velocityScale = 20;
+                    this.ctx.strokeStyle = 'rgba(67, 233, 123, 0.5)';
+                    this.ctx.lineWidth = 1;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(px, py);
+                    this.ctx.lineTo(px + particle.velocity * velocityScale, py);
+                    this.ctx.stroke();
+                }
+            }
+
+            // Draw iteration info
+            this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            this.ctx.font = '14px Inter';
+            this.ctx.fillText(`Iteración: ${this.currentIteration}`, padding + 10, padding + 20);
+            this.ctx.fillText(`Partículas: ${this.particles.length}`, padding + 10, padding + 40);
+        }
+    }
+}
+
+// ============================================
 // TAB SWITCHING FUNCTION
 // ============================================
 
@@ -1020,6 +1251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new HillClimbingVisualizer();
     new SimulatedAnnealingVisualizer();
     new GeneticAlgorithmVisualizer();
+    new ParticleSwarmVisualizer();
 
     // Initialize pseudocode panels
     initPseudocodePanels();

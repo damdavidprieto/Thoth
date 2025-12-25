@@ -694,11 +694,11 @@ function togglePseudocode(header) {
     }
 }
 
-// Initialize pseudocode panels as expanded
+// Initialize pseudocode panels as collapsed
 function initPseudocodePanels() {
     const panels = document.querySelectorAll('.pseudocode-content');
     panels.forEach(panel => {
-        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.style.maxHeight = '0px';
     });
 }
 

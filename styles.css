@@ -841,7 +841,7 @@ canvas:hover {
 .pseudocode-content {
     overflow: hidden;
     transition: max-height 0.4s ease-out;
-    padding: 0 var(--spacing-lg) var(--spacing-lg);
+    padding: 0;
 }
 
 .pseudocode-box h4 {
@@ -856,6 +856,7 @@ canvas:hover {
 .pseudocode {
     background: rgba(0, 0, 0, 0.5);
     padding: var(--spacing-md);
+    margin: var(--spacing-lg);
     border-radius: 8px;
     font-family: var(--font-mono);
     font-size: 0.85rem;

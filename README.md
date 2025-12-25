@@ -1,10 +1,10 @@
-# 🧠 HeuristicViz
+# 🧠 Laboratorio Interactivo de Algoritmos
 
-**Visualización Interactiva de Algoritmos Heurísticos**
+
 
 Una aplicación web moderna e interactiva para visualizar y experimentar con algoritmos heurísticos de optimización y búsqueda.
 
-![HeuristicViz Demo](https://img.shields.io/badge/Estado-Activo-success)
+![Laboratorio Interactivo de Algoritmos](https://img.shields.io/badge/Estado-Activo-success)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
@@ -128,7 +128,7 @@ Técnica de optimización inspirada en la evolución biológica que utiliza sele
 ## 📁 Estructura del Proyecto
 
 ```
-HeuristicViz/
+Laboratorio-Interactivo-Algoritmos/
 ├── index.html      # Estructura HTML principal
 ├── styles.css      # Sistema de diseño y estilos
 ├── script.js       # Lógica de los algoritmos y visualizaciones

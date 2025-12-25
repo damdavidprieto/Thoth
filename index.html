@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeuristicViz - Visualización de Algoritmos Heurísticos</title>
+    <title>Laboratorio Interactivo de Algoritmos</title>
     <meta name="description"
         content="Visualiza y experimenta con algoritmos heurísticos como A*, Hill Climbing y Simulated Annealing de forma interactiva">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,13 +22,12 @@
         <div class="container">
             <h1 class="logo">
                 <span class="logo-icon">🧠</span>
-                HeuristicViz
+                Laboratorio Interactivo de Algoritmos
             </h1>
-            <p class="tagline">Visualización Interactiva de Algoritmos Heurísticos</p>
-            <div class="quote-box">
-                <p class="quote-text">"El camino más corto no siempre es el primero que encuentras, pero saber buscarlo
-                    es el arte de la heurística." - "Reflexión sobre algoritmos de búsqueda"</p>
-            </div>
+            <p class="tagline">"Los algoritmos son recetas para resolver problemas. La clave está en elegir la receta
+                correcta."</p>
+
+
         </div>
     </header>
 
@@ -41,7 +40,7 @@
                     📚 Algoritmos Básicos
                 </button>
                 <button class="tab-button" onclick="switchTab('classic')">
-                    🎯 Algoritmos Clásicos
+                    🎯 Algoritmos Heurísticos
                 </button>
                 <button class="tab-button" onclick="switchTab('evolutionary')">
                     🧬 Algoritmos Evolutivos
@@ -65,6 +64,16 @@
 
             <!-- Classic Algorithms Tab Content -->
             <div id="classic-tab" class="tab-content">
+                <div class="tab-intro">
+                    <h2>🎯 Algoritmos Heurísticos</h2>
+                    <p>Algoritmos de búsqueda y optimización que utilizan heurísticas para encontrar soluciones
+                        eficientes.</p>
+                    <div class="quote-box">
+                        <p class="quote-text">"El camino más corto no siempre es el primero que encuentras, pero saber
+                            buscarlo
+                            es el arte de la heurística." - "Reflexión sobre algoritmos de búsqueda"</p>
+                    </div>
+                </div>
 
                 <!-- A* Pathfinding Section -->
                 <section class="algorithm-section" id="astar-section">
@@ -834,7 +843,7 @@ funcion ParticleSwarmOptimization(num_particulas, max_iteraciones):
                 <p class="footer-wisdom">"No hay camino perfecto, solo decisiones informadas y la voluntad de
                     adaptarse." - "Filosofía de los algoritmos heurísticos"</p>
             </div>
-            <p>HeuristicViz - Visualización Interactiva de Algoritmos Heurísticos</p>
+            <p>Laboratorio Interactivo de Algoritmos</p>
             <p class="footer-note">Experimenta y aprende cómo funcionan los algoritmos de optimización</p>
             <p class="footer-riddle">🧩 Pregunta final: Si un algoritmo nunca acepta empeorar, ¿puede encontrar lo mejor
                 del mundo, o solo lo mejor de su vecindario?</p>

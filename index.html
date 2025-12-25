@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeuristicViz - Visualización de Algoritmos Heurísticos</title>
+    <meta name="description"
+        content="Visualiza y experimenta con algoritmos heurísticos como A*, Hill Climbing y Simulated Annealing de forma interactiva">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="background-gradient"></div>
+
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">
+                <span class="logo-icon">🧠</span>
+                HeuristicViz
+            </h1>
+            <p class="tagline">Visualización Interactiva de Algoritmos Heurísticos</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+
+            <!-- A* Pathfinding Section -->
+            <section class="algorithm-section" id="astar-section">
+                <div class="section-header">
+                    <h2>🎯 A* Pathfinding</h2>
+                    <p class="section-description">Encuentra el camino más corto entre dos puntos usando heurística</p>
+                </div>
+
+                <div class="algorithm-container">
+                    <div class="visualization-panel glass-panel">
+                        <div class="panel-header">
+                            <h3>Grid Interactivo</h3>
+                            <div class="legend">
+                                <span class="legend-item"><span class="color-box start"></span> Inicio</span>
+                                <span class="legend-item"><span class="color-box end"></span> Final</span>
+                                <span class="legend-item"><span class="color-box wall"></span> Obstáculo</span>
+                                <span class="legend-item"><span class="color-box path"></span> Camino</span>
+                                <span class="legend-item"><span class="color-box visited"></span> Visitado</span>
+                            </div>
+                        </div>
+                        <canvas id="astar-canvas" width="600" height="600"></canvas>
+                    </div>
+
+                    <div class="controls-panel glass-panel">
+                        <h3>Controles</h3>
+                        <div class="control-group">
+                            <label for="grid-size">Tamaño del Grid</label>
+                            <input type="range" id="grid-size" min="10" max="40" value="20" step="5">
+                            <span class="value-display" id="grid-size-value">20x20</span>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="animation-speed">Velocidad de Animación</label>
+                            <input type="range" id="animation-speed" min="1" max="100" value="50">
+                            <span class="value-display" id="speed-value">50ms</span>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" id="astar-start">
+                                <span class="btn-icon">▶</span> Ejecutar A*
+                            </button>
+                            <button class="btn btn-secondary" id="astar-reset">
+                                <span class="btn-icon">↻</span> Reiniciar
+                            </button>
+                            <button class="btn btn-secondary" id="astar-clear-walls">
+                                <span class="btn-icon">🗑</span> Limpiar Obstáculos
+                            </button>
+                        </div>
+
+                        <div class="stats-panel">
+                            <h4>Estadísticas</h4>
+                            <div class="stat-item">
+                                <span class="stat-label">Nodos Visitados:</span>
+                                <span class="stat-value" id="astar-visited">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Longitud del Camino:</span>
+                                <span class="stat-value" id="astar-path-length">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Tiempo:</span>
+                                <span class="stat-value" id="astar-time">0ms</span>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <p><strong>Instrucciones:</strong></p>
+                            <ul>
+                                <li>Click para colocar obstáculos</li>
+                                <li>Arrastra el punto verde (inicio) o rojo (final)</li>
+                                <li>Presiona "Ejecutar A*" para ver el algoritmo en acción</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hill Climbing Section -->
+            <section class="algorithm-section" id="hillclimbing-section">
+                <div class="section-header">
+                    <h2>⛰️ Hill Climbing</h2>
+                    <p class="section-description">Optimización por búsqueda local ascendente</p>
+                </div>
+
+                <div class="algorithm-container">
+                    <div class="visualization-panel glass-panel">
+                        <div class="panel-header">
+                            <h3>Superficie de Optimización</h3>
+                        </div>
+                        <canvas id="hillclimbing-canvas" width="600" height="400"></canvas>
+                    </div>
+
+                    <div class="controls-panel glass-panel">
+                        <h3>Controles</h3>
+                        <div class="control-group">
+                            <label for="hc-function">Función a Optimizar</label>
+                            <select id="hc-function">
+                                <option value="quadratic">Cuadrática Simple</option>
+                                <option value="sine">Función Seno</option>
+                                <option value="rastrigin">Rastrigin (múltiples máximos)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="hc-step-size">Tamaño de Paso</label>
+                            <input type="range" id="hc-step-size" min="0.01" max="1" value="0.1" step="0.01">
+                            <span class="value-display" id="hc-step-value">0.1</span>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="hc-max-iterations">Iteraciones Máximas</label>
+                            <input type="range" id="hc-max-iterations" min="10" max="200" value="100" step="10">
+                            <span class="value-display" id="hc-iterations-value">100</span>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" id="hc-start">
+                                <span class="btn-icon">▶</span> Ejecutar Hill Climbing
+                            </button>
+                            <button class="btn btn-secondary" id="hc-reset">
+                                <span class="btn-icon">↻</span> Reiniciar
+                            </button>
+                        </div>
+
+                        <div class="stats-panel">
+                            <h4>Resultados</h4>
+                            <div class="stat-item">
+                                <span class="stat-label">Iteraciones:</span>
+                                <span class="stat-value" id="hc-iterations">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mejor Valor:</span>
+                                <span class="stat-value" id="hc-best-value">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Posición X:</span>
+                                <span class="stat-value" id="hc-position">-</span>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <p><strong>Sobre Hill Climbing:</strong></p>
+                            <p>Algoritmo de optimización que siempre se mueve hacia la mejor solución vecina. Puede
+                                quedar atrapado en máximos locales.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Simulated Annealing Section -->
+            <section class="algorithm-section" id="annealing-section">
+                <div class="section-header">
+                    <h2>🔥 Simulated Annealing</h2>
+                    <p class="section-description">Optimización probabilística inspirada en el recocido metalúrgico</p>
+                </div>
+
+                <div class="algorithm-container">
+                    <div class="visualization-panel glass-panel">
+                        <div class="panel-header">
+                            <h3>Exploración del Espacio de Búsqueda</h3>
+                        </div>
+                        <canvas id="annealing-canvas" width="600" height="400"></canvas>
+                        <div class="temperature-bar">
+                            <label>Temperatura:</label>
+                            <div class="temp-bar-container">
+                                <div class="temp-bar-fill" id="temp-bar"></div>
+                            </div>
+                            <span id="temp-value">100</span>
+                        </div>
+                    </div>
+
+                    <div class="controls-panel glass-panel">
+                        <h3>Controles</h3>
+                        <div class="control-group">
+                            <label for="sa-function">Función a Optimizar</label>
+                            <select id="sa-function">
+                                <option value="quadratic">Cuadrática Simple</option>
+                                <option value="sine">Función Seno</option>
+                                <option value="rastrigin">Rastrigin (múltiples máximos)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sa-temp-initial">Temperatura Inicial</label>
+                            <input type="range" id="sa-temp-initial" min="50" max="200" value="100" step="10">
+                            <span class="value-display" id="sa-temp-initial-value">100</span>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sa-cooling-rate">Tasa de Enfriamiento</label>
+                            <input type="range" id="sa-cooling-rate" min="0.85" max="0.99" value="0.95" step="0.01">
+                            <span class="value-display" id="sa-cooling-value">0.95</span>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sa-max-iterations">Iteraciones Máximas</label>
+                            <input type="range" id="sa-max-iterations" min="50" max="500" value="200" step="50">
+                            <span class="value-display" id="sa-iterations-value">200</span>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" id="sa-start">
+                                <span class="btn-icon">▶</span> Ejecutar Simulated Annealing
+                            </button>
+                            <button class="btn btn-secondary" id="sa-reset">
+                                <span class="btn-icon">↻</span> Reiniciar
+                            </button>
+                        </div>
+
+                        <div class="stats-panel">
+                            <h4>Resultados</h4>
+                            <div class="stat-item">
+                                <span class="stat-label">Iteraciones:</span>
+                                <span class="stat-value" id="sa-iterations">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mejor Valor:</span>
+                                <span class="stat-value" id="sa-best-value">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Posición X:</span>
+                                <span class="stat-value" id="sa-position">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Aceptaciones:</span>
+                                <span class="stat-value" id="sa-acceptances">0</span>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <p><strong>Sobre Simulated Annealing:</strong></p>
+                            <p>Acepta soluciones peores con cierta probabilidad que disminuye con el tiempo, permitiendo
+                                escapar de máximos locales.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>HeuristicViz - Visualización Interactiva de Algoritmos Heurísticos</p>
+            <p class="footer-note">Experimenta y aprende cómo funcionan los algoritmos de optimización</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

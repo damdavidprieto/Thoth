@@ -692,6 +692,14 @@ function togglePseudocode(header) {
     }
 }
 
+// Initialize pseudocode panels as expanded
+function initPseudocodePanels() {
+    const panels = document.querySelectorAll('.pseudocode-content');
+    panels.forEach(panel => {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+    });
+}
+
 // ============================================
 // INITIALIZE ALL VISUALIZERS
 // ============================================
@@ -700,4 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new AStarVisualizer();
     new HillClimbingVisualizer();
     new SimulatedAnnealingVisualizer();
+
+    // Initialize pseudocode panels
+    initPseudocodePanels();
 });

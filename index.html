@@ -279,47 +279,46 @@ funcion HillClimbing(funcion_objetivo, max_iteraciones):
                         </div>
                     </div>
                 </div>
-        </div>
-        </section>
+            </section>
 
-        <!-- Riddle Divider 2 -->
-        <div class="riddle-divider">
-            <div class="riddle-content">
-                <span class="riddle-icon">🔮</span>
-                <p class="riddle-text">Reflexión: ¿Qué es más valioso: encontrar rápido una buena solución, o
-                    explorar pacientemente para hallar la mejor?</p>
-                <p class="riddle-hint">Pista: La respuesta depende del tiempo que tengas y del costo de equivocarte.
-                </p>
-            </div>
-        </div>
-
-        <!-- Simulated Annealing Section -->
-        <section class="algorithm-section" id="annealing-section">
-            <div class="section-header">
-                <h2>🔥 Simulated Annealing</h2>
-                <p class="section-description">Optimización probabilística inspirada en el recocido metalúrgico</p>
+            <!-- Riddle Divider 2 -->
+            <div class="riddle-divider">
+                <div class="riddle-content">
+                    <span class="riddle-icon">🔮</span>
+                    <p class="riddle-text">Reflexión: ¿Qué es más valioso: encontrar rápido una buena solución, o
+                        explorar pacientemente para hallar la mejor?</p>
+                    <p class="riddle-hint">Pista: La respuesta depende del tiempo que tengas y del costo de equivocarte.
+                    </p>
+                </div>
             </div>
 
-            <div class="algorithm-container">
-                <div class="visualization-panel glass-panel">
-                    <div class="panel-header">
-                        <h3>Exploración del Espacio de Búsqueda</h3>
-                    </div>
-                    <canvas id="annealing-canvas" width="600" height="400"></canvas>
-                    <div class="temperature-bar">
-                        <label>Temperatura:</label>
-                        <div class="temp-bar-container">
-                            <div class="temp-bar-fill" id="temp-bar"></div>
-                        </div>
-                        <span id="temp-value">100</span>
-                    </div>
+            <!-- Simulated Annealing Section -->
+            <section class="algorithm-section" id="annealing-section">
+                <div class="section-header">
+                    <h2>🔥 Simulated Annealing</h2>
+                    <p class="section-description">Optimización probabilística inspirada en el recocido metalúrgico</p>
+                </div>
 
-                    <div class="pseudocode-box collapsible">
-                        <div class="pseudocode-header" onclick="togglePseudocode(this)">
-                            <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Simulated Annealing</h4>
+                <div class="algorithm-container">
+                    <div class="visualization-panel glass-panel">
+                        <div class="panel-header">
+                            <h3>Exploración del Espacio de Búsqueda</h3>
                         </div>
-                        <div class="pseudocode-content">
-                            <pre class="pseudocode">
+                        <canvas id="annealing-canvas" width="600" height="400"></canvas>
+                        <div class="temperature-bar">
+                            <label>Temperatura:</label>
+                            <div class="temp-bar-container">
+                                <div class="temp-bar-fill" id="temp-bar"></div>
+                            </div>
+                            <span id="temp-value">100</span>
+                        </div>
+
+                        <div class="pseudocode-box collapsible">
+                            <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Simulated Annealing</h4>
+                            </div>
+                            <div class="pseudocode-content">
+                                <pre class="pseudocode">
 funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
     actual = solución_aleatoria()
     mejor = actual
@@ -347,109 +346,110 @@ funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
     
     retornar mejor
 </pre>
-                            <p class="pseudocode-note"><strong>Ventaja:</strong> La aceptación probabilística de
-                                soluciones
-                                peores permite escapar de máximos locales. La temperatura controla cuánta "exploración"
-                                vs
-                                "explotación".</p>
+                                <p class="pseudocode-note"><strong>Ventaja:</strong> La aceptación probabilística de
+                                    soluciones
+                                    peores permite escapar de máximos locales. La temperatura controla cuánta
+                                    "exploración"
+                                    vs
+                                    "explotación".</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="controls-panel glass-panel">
+                        <h3>Controles</h3>
+                        <div class="control-group">
+                            <label for="sa-function">Función a Optimizar</label>
+                            <select id="sa-function">
+                                <option value="quadratic">Cuadrática Simple</option>
+                                <option value="sine">Función Seno</option>
+                                <option value="rastrigin">Rastrigin (múltiples máximos)</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sa-temp-initial">Temperatura Inicial</label>
+                            <input type="range" id="sa-temp-initial" min="50" max="200" value="100" step="10">
+                            <span class="value-display" id="sa-temp-initial-value">100</span>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sa-cooling-rate">Tasa de Enfriamiento</label>
+                            <input type="range" id="sa-cooling-rate" min="0.85" max="0.99" value="0.95" step="0.01">
+                            <span class="value-display" id="sa-cooling-value">0.95</span>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sa-max-iterations">Iteraciones Máximas</label>
+                            <input type="range" id="sa-max-iterations" min="50" max="500" value="200" step="50">
+                            <span class="value-display" id="sa-iterations-value">200</span>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn btn-primary" id="sa-start">
+                                <span class="btn-icon">▶</span> Ejecutar Simulated Annealing
+                            </button>
+                            <button class="btn btn-secondary" id="sa-reset">
+                                <span class="btn-icon">↻</span> Reiniciar
+                            </button>
+                        </div>
+
+                        <div class="stats-panel">
+                            <h4>Resultados</h4>
+                            <div class="stat-item">
+                                <span class="stat-label">Iteraciones:</span>
+                                <span class="stat-value" id="sa-iterations">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Mejor Valor:</span>
+                                <span class="stat-value" id="sa-best-value">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Posición X:</span>
+                                <span class="stat-value" id="sa-position">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Aceptaciones:</span>
+                                <span class="stat-value" id="sa-acceptances">0</span>
+                            </div>
+                        </div>
+
+                        <div class="info-box">
+                            <p><strong>Sobre Simulated Annealing:</strong></p>
+                            <p>Acepta soluciones peores con cierta probabilidad que disminuye con el tiempo, permitiendo
+                                escapar de máximos locales.</p>
+                            <div class="quote-mini">
+                                <em>"A veces, retroceder un paso te permite saltar más lejos. La aleatoriedad controlada
+                                    es sabiduría disfrazada." - "Principio del recocido simulado"</em>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="controls-panel glass-panel">
-                    <h3>Controles</h3>
-                    <div class="control-group">
-                        <label for="sa-function">Función a Optimizar</label>
-                        <select id="sa-function">
-                            <option value="quadratic">Cuadrática Simple</option>
-                            <option value="sine">Función Seno</option>
-                            <option value="rastrigin">Rastrigin (múltiples máximos)</option>
-                        </select>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="sa-temp-initial">Temperatura Inicial</label>
-                        <input type="range" id="sa-temp-initial" min="50" max="200" value="100" step="10">
-                        <span class="value-display" id="sa-temp-initial-value">100</span>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="sa-cooling-rate">Tasa de Enfriamiento</label>
-                        <input type="range" id="sa-cooling-rate" min="0.85" max="0.99" value="0.95" step="0.01">
-                        <span class="value-display" id="sa-cooling-value">0.95</span>
-                    </div>
-
-                    <div class="control-group">
-                        <label for="sa-max-iterations">Iteraciones Máximas</label>
-                        <input type="range" id="sa-max-iterations" min="50" max="500" value="200" step="50">
-                        <span class="value-display" id="sa-iterations-value">200</span>
-                    </div>
-
-                    <div class="button-group">
-                        <button class="btn btn-primary" id="sa-start">
-                            <span class="btn-icon">▶</span> Ejecutar Simulated Annealing
-                        </button>
-                        <button class="btn btn-secondary" id="sa-reset">
-                            <span class="btn-icon">↻</span> Reiniciar
-                        </button>
-                    </div>
-
-                    <div class="stats-panel">
-                        <h4>Resultados</h4>
-                        <div class="stat-item">
-                            <span class="stat-label">Iteraciones:</span>
-                            <span class="stat-value" id="sa-iterations">0</span>
+            <!-- Final Wisdom -->
+            <div class="wisdom-section">
+                <div class="wisdom-content">
+                    <h3>💡 Reflexiones Finales</h3>
+                    <div class="wisdom-grid">
+                        <div class="wisdom-card">
+                            <p class="wisdom-title">Sobre la Perfección</p>
+                            <p class="wisdom-text">"En la búsqueda de lo óptimo, a menudo lo suficientemente bueno es
+                                extraordinario." - "Voltaire (adaptado)"</p>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Mejor Valor:</span>
-                            <span class="stat-value" id="sa-best-value">-</span>
+                        <div class="wisdom-card">
+                            <p class="wisdom-title">Sobre la Exploración</p>
+                            <p class="wisdom-text">"Quien solo mira hacia arriba nunca descubre los valles que conducen
+                                a montañas más altas." - "Proverbio de optimización"</p>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Posición X:</span>
-                            <span class="stat-value" id="sa-position">-</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-label">Aceptaciones:</span>
-                            <span class="stat-value" id="sa-acceptances">0</span>
-                        </div>
-                    </div>
-
-                    <div class="info-box">
-                        <p><strong>Sobre Simulated Annealing:</strong></p>
-                        <p>Acepta soluciones peores con cierta probabilidad que disminuye con el tiempo, permitiendo
-                            escapar de máximos locales.</p>
-                        <div class="quote-mini">
-                            <em>"A veces, retroceder un paso te permite saltar más lejos. La aleatoriedad controlada
-                                es sabiduría disfrazada." - "Principio del recocido simulado"</em>
+                        <div class="wisdom-card">
+                            <p class="wisdom-title">Sobre el Equilibrio</p>
+                            <p class="wisdom-text">"La sabiduría está en saber cuándo explorar nuevos caminos y cuándo
+                                explotar el conocido." - "Dilema exploración-explotación"</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Final Wisdom -->
-        <div class="wisdom-section">
-            <div class="wisdom-content">
-                <h3>💡 Reflexiones Finales</h3>
-                <div class="wisdom-grid">
-                    <div class="wisdom-card">
-                        <p class="wisdom-title">Sobre la Perfección</p>
-                        <p class="wisdom-text">"En la búsqueda de lo óptimo, a menudo lo suficientemente bueno es
-                            extraordinario." - "Voltaire (adaptado)"</p>
-                    </div>
-                    <div class="wisdom-card">
-                        <p class="wisdom-title">Sobre la Exploración</p>
-                        <p class="wisdom-text">"Quien solo mira hacia arriba nunca descubre los valles que conducen
-                            a montañas más altas." - "Proverbio de optimización"</p>
-                    </div>
-                    <div class="wisdom-card">
-                        <p class="wisdom-title">Sobre el Equilibrio</p>
-                        <p class="wisdom-text">"La sabiduría está en saber cuándo explorar nuevos caminos y cuándo
-                            explotar el conocido." - "Dilema exploración-explotación"</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         </div>
     </main>

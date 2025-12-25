@@ -676,6 +676,23 @@ class SimulatedAnnealingVisualizer {
 }
 
 // ============================================
+// TOGGLE PSEUDOCODE FUNCTION
+// ============================================
+
+function togglePseudocode(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+
+    if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+        icon.textContent = '▶';
+    } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        icon.textContent = '▼';
+    }
+}
+
+// ============================================
 // INITIALIZE ALL VISUALIZERS
 // ============================================
 

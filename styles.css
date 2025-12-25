@@ -806,11 +806,43 @@ canvas:hover {
 /* Pseudocode Boxes */
 .pseudocode-box {
     margin-top: var(--spacing-lg);
-    padding: var(--spacing-lg);
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     border-left: 4px solid var(--primary-color);
+    overflow: hidden;
+}
+
+.pseudocode-box.collapsible .pseudocode-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    user-select: none;
+}
+
+.pseudocode-box.collapsible .pseudocode-header:hover {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.pseudocode-box.collapsible .pseudocode-header h4 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.toggle-icon {
+    font-size: 0.8rem;
+    transition: transform var(--transition-normal);
+    display: inline-block;
+    color: var(--primary-color);
+}
+
+.pseudocode-content {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
 }
 
 .pseudocode-box h4 {

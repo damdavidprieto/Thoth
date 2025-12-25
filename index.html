@@ -56,9 +56,12 @@
                         </div>
                         <canvas id="astar-canvas" width="600" height="600"></canvas>
 
-                        <div class="pseudocode-box">
-                            <h4>📋 Pseudocódigo A*</h4>
-                            <pre class="pseudocode">
+                        <div class="pseudocode-box collapsible">
+                            <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <h4><span class="toggle-icon">▼</span> 📋 Pseudocódigo A*</h4>
+                            </div>
+                            <div class="pseudocode-content">
+                                <pre class="pseudocode">
 funcion A_Estrella(inicio, objetivo):
     abiertos = [inicio]              // Nodos por explorar
     cerrados = []                    // Nodos ya visitados
@@ -92,8 +95,10 @@ funcion A_Estrella(inicio, objetivo):
     
     retornar "No hay camino"
 </pre>
-                            <p class="pseudocode-note"><strong>Clave:</strong> La heurística (distancia Manhattan) guía
-                                la búsqueda hacia el objetivo, haciendo que A* sea más eficiente que Dijkstra.</p>
+                                <p class="pseudocode-note"><strong>Clave:</strong> La heurística (distancia Manhattan)
+                                    guía
+                                    la búsqueda hacia el objetivo, haciendo que A* sea más eficiente que Dijkstra.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -175,9 +180,12 @@ funcion A_Estrella(inicio, objetivo):
                         </div>
                         <canvas id="hillclimbing-canvas" width="600" height="400"></canvas>
 
-                        <div class="pseudocode-box">
-                            <h4>📋 Pseudocódigo Hill Climbing</h4>
-                            <pre class="pseudocode">
+                        <div class="pseudocode-box collapsible">
+                            <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <h4><span class="toggle-icon">▼</span> 📋 Pseudocódigo Hill Climbing</h4>
+                            </div>
+                            <div class="pseudocode-content">
+                                <pre class="pseudocode">
 funcion HillClimbing(funcion_objetivo, max_iteraciones):
     actual = solución_aleatoria()   // Punto de partida
     valor_actual = evaluar(actual)
@@ -206,8 +214,9 @@ funcion HillClimbing(funcion_objetivo, max_iteraciones):
     
     retornar actual, valor_actual
 </pre>
-                            <p class="pseudocode-note"><strong>Limitación:</strong> Siempre sube, nunca baja. Puede
-                                quedar atrapado en máximos locales sin encontrar el óptimo global.</p>
+                                <p class="pseudocode-note"><strong>Limitación:</strong> Siempre sube, nunca baja. Puede
+                                    quedar atrapado en máximos locales sin encontrar el óptimo global.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -305,9 +314,12 @@ funcion HillClimbing(funcion_objetivo, max_iteraciones):
                         <span id="temp-value">100</span>
                     </div>
 
-                    <div class="pseudocode-box">
-                        <h4>📋 Pseudocódigo Simulated Annealing</h4>
-                        <pre class="pseudocode">
+                    <div class="pseudocode-box collapsible">
+                        <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                            <h4><span class="toggle-icon">▼</span> 📋 Pseudocódigo Simulated Annealing</h4>
+                        </div>
+                        <div class="pseudocode-content">
+                            <pre class="pseudocode">
 funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
     actual = solución_aleatoria()
     mejor = actual
@@ -335,9 +347,12 @@ funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
     
     retornar mejor
 </pre>
-                        <p class="pseudocode-note"><strong>Ventaja:</strong> La aceptación probabilística de soluciones
-                            peores permite escapar de máximos locales. La temperatura controla cuánta "exploración" vs
-                            "explotación".</p>
+                            <p class="pseudocode-note"><strong>Ventaja:</strong> La aceptación probabilística de
+                                soluciones
+                                peores permite escapar de máximos locales. La temperatura controla cuánta "exploración"
+                                vs
+                                "explotación".</p>
+                        </div>
                     </div>
                 </div>
 

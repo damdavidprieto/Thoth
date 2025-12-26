@@ -976,3 +976,62 @@ canvas:hover {
     color: var(--text-secondary);
     line-height: 1.6;
 }
+
+/* Pros/Cons Tables */
+.pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .pros-cons {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pros,
+.cons {
+    padding: var(--spacing-sm);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.pros {
+    border-left: 3px solid #43e97b;
+}
+
+.cons {
+    border-left: 3px solid #f5576c;
+}
+
+.pros strong {
+    color: #43e97b;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+}
+
+.cons strong {
+    color: #f5576c;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.9rem;
+}
+
+.pros ul,
+.cons ul {
+    margin-left: var(--spacing-md);
+    margin-top: var(--spacing-xs);
+}
+
+.pros li,
+.cons li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+}

@@ -133,6 +133,25 @@ funcion BusquedaLineal(array, objetivo):
                                 <p><strong>Sobre Búsqueda Lineal:</strong></p>
                                 <p>El algoritmo más simple. Revisa cada elemento secuencialmente hasta encontrar el
                                     objetivo o llegar al final.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>Muy simple de implementar</li>
+                                            <li>Funciona en datos no ordenados</li>
+                                            <li>No requiere preprocesamiento</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>O(n) - lento para datos grandes</li>
+                                            <li>Revisa todos los elementos en peor caso</li>
+                                            <li>Ineficiente comparado con búsqueda binaria</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,6 +239,25 @@ funcion BusquedaBinaria(array_ordenado, objetivo):
                                 <p><strong>Sobre Búsqueda Binaria:</strong></p>
                                 <p>Mucho más eficiente que la búsqueda lineal, pero requiere que el array esté ordenado.
                                     Divide el espacio de búsqueda a la mitad en cada paso.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>O(log n) - muy rápido</li>
+                                            <li>Eficiente para datos grandes</li>
+                                            <li>Reduce espacio de búsqueda a la mitad</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>Requiere datos ordenados</li>
+                                            <li>No funciona con listas enlazadas</li>
+                                            <li>Necesita acceso aleatorio rápido</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -325,6 +363,25 @@ funcion BubbleSort(array):
                                 <p><strong>Sobre Bubble Sort:</strong></p>
                                 <p>Simple pero ineficiente para arrays grandes. Útil para aprender los conceptos básicos
                                     de ordenamiento.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>Muy fácil de entender e implementar</li>
+                                            <li>No requiere memoria adicional (in-place)</li>
+                                            <li>Algoritmo estable</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>O(n²) - muy lento para datos grandes</li>
+                                            <li>Hace muchas comparaciones innecesarias</li>
+                                            <li>Raramente usado en producción</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -415,6 +472,25 @@ funcion SelectionSort(array):
                                 <p><strong>Sobre Selection Sort:</strong></p>
                                 <p>Encuentra el elemento más pequeño y lo coloca en su posición final. Más eficiente en
                                     intercambios que Bubble Sort.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>Fácil de implementar</li>
+                                            <li>Hace mínimos intercambios (O(n))</li>
+                                            <li>Funciona bien con escrituras costosas</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>O(n²) incluso en mejor caso</li>
+                                            <li>No es estable</li>
+                                            <li>No aprovecha datos parcialmente ordenados</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -503,6 +579,26 @@ funcion InsertionSort(array):
                                 <p><strong>Sobre Insertion Sort:</strong></p>
                                 <p>Como ordenar cartas en tu mano. Eficiente para arrays pequeños y datos casi
                                     ordenados.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>O(n) en mejor caso (datos ordenados)</li>
+                                            <li>Muy eficiente para arrays pequeños</li>
+                                            <li>Algoritmo estable y adaptativo</li>
+                                            <li>Funciona bien online (datos en streaming)</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>O(n²) en peor caso</li>
+                                            <li>Ineficiente para arrays grandes</li>
+                                            <li>Muchos desplazamientos de elementos</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1395,20 +1491,40 @@ funcion distancia_euclidiana(p1, p2):
                                 <div class="stat-item">
                                     <span class="stat-label">Convergencia:</span>
                                     <span class="stat-value" id="kmeans-convergence">-</span>
-                                </div>
-                            </div>
+                                    <div class="info-box">
+                                        <p><strong>Sobre K-means:</strong></p>
+                                        <p>Algoritmo de clustering que agrupa datos en K clusters. Itera entre asignar
+                                            puntos al
+                                            centroide más cercano y recalcular centroides hasta convergencia.</p>
 
-                            <div class="info-box">
-                                <p><strong>Sobre K-means:</strong></p>
-                                <p>Algoritmo de clustering que agrupa datos en K clusters. Itera entre asignar puntos al
-                                    centroide más cercano y recalcular centroides hasta convergencia.</p>
-                                <div class="quote-mini">
-                                    <em>"Los patrones emergen cuando dejamos que los datos hablen por sí mismos." -
-                                        "Aprendizaje no supervisado"</em>
+                                        <div class="pros-cons">
+                                            <div class="pros">
+                                                <strong>✅ Ventajas:</strong>
+                                                <ul>
+                                                    <li>Simple y fácil de implementar</li>
+                                                    <li>Escala bien a grandes datasets</li>
+                                                    <li>Converge rápidamente</li>
+                                                    <li>Funciona bien con clusters esféricos</li>
+                                                </ul>
+                                            </div>
+                                            <div class="cons">
+                                                <strong>❌ Desventajas:</strong>
+                                                <ul>
+                                                    <li>Requiere especificar K de antemano</li>
+                                                    <li>Sensible a inicialización</li>
+                                                    <li>Puede quedar en mínimos locales</li>
+                                                    <li>No funciona bien con clusters no esféricos</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="quote-mini">
+                                            <em>"Los patrones emergen cuando dejamos que los datos hablen por sí
+                                                mismos." -
+                                                "Aprendizaje no supervisado"</em>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
                 </section>
 
             </div>

@@ -1815,6 +1815,264 @@ class InsertionSortVisualizer {
     }
 }
 
+// Merge Sort
+class MergeSortVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('merge-sort-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 10;
+        this.speed = 100;
+        this.comparisons = 0;
+        this.merges = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('merge-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('merge-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('merge-speed').addEventListener('input', (e) => {
+            this.speed = parseInt(e.target.value);
+            document.getElementById('merge-speed-value').textContent = this.speed + 'ms';
+        });
+
+        document.getElementById('merge-start').addEventListener('click', () => this.sort());
+        document.getElementById('merge-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 10);
+        }
+        this.comparisons = 0;
+        this.merges = 0;
+        document.getElementById('merge-comparisons').textContent = '0';
+        document.getElementById('merge-merges').textContent = '0';
+        this.draw();
+    }
+
+    async sort() {
+        this.comparisons = 0;
+        this.merges = 0;
+        await this.mergeSort(0, this.array.length - 1);
+        this.draw(-1, -1, this.array.length);
+    }
+
+    async mergeSort(left, right) {
+        if (left < right) {
+            const mid = Math.floor((left + right) / 2);
+            await this.mergeSort(left, mid);
+            await this.mergeSort(mid + 1, right);
+            await this.merge(left, mid, right);
+        }
+    }
+
+    async merge(left, mid, right) {
+        const leftArr = this.array.slice(left, mid + 1);
+        const rightArr = this.array.slice(mid + 1, right + 1);
+
+        let i = 0, j = 0, k = left;
+
+        while (i < leftArr.length && j < rightArr.length) {
+            this.comparisons++;
+            document.getElementById('merge-comparisons').textContent = this.comparisons;
+
+            this.draw(k, left, right);
+            await this.sleep(this.speed);
+
+            if (leftArr[i] <= rightArr[j]) {
+                this.array[k] = leftArr[i];
+                i++;
+            } else {
+                this.array[k] = rightArr[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < leftArr.length) {
+            this.array[k] = leftArr[i];
+            i++;
+            k++;
+        }
+
+        while (j < rightArr.length) {
+            this.array[k] = rightArr[j];
+            j++;
+            k++;
+        }
+
+        this.merges++;
+        document.getElementById('merge-merges').textContent = this.merges;
+        this.draw(-1, left, right);
+        await this.sleep(this.speed);
+    }
+
+    draw(currentIdx = -1, mergeStart = -1, mergeEnd = -1) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const barWidth = (this.canvas.width - 80) / this.array.length;
+        const maxHeight = this.canvas.height - 80;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = 40 + i * barWidth;
+            const height = (this.array[i] / 110) * maxHeight;
+            const y = this.canvas.height - 40 - height;
+
+            if (i === currentIdx) {
+                this.ctx.fillStyle = '#ffd93d';
+            } else if (i >= mergeStart && i <= mergeEnd) {
+                this.ctx.fillStyle = '#43e97b';
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            }
+
+            this.ctx.fillRect(x, y, barWidth - 4, height);
+
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '12px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + barWidth / 2 - 2, y - 5);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// Quick Sort
+class QuickSortVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('quick-sort-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 10;
+        this.speed = 100;
+        this.comparisons = 0;
+        this.swaps = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('quick-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('quick-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('quick-speed').addEventListener('input', (e) => {
+            this.speed = parseInt(e.target.value);
+            document.getElementById('quick-speed-value').textContent = this.speed + 'ms';
+        });
+
+        document.getElementById('quick-start').addEventListener('click', () => this.sort());
+        document.getElementById('quick-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 10);
+        }
+        this.comparisons = 0;
+        this.swaps = 0;
+        document.getElementById('quick-comparisons').textContent = '0';
+        document.getElementById('quick-swaps').textContent = '0';
+        this.draw();
+    }
+
+    async sort() {
+        this.comparisons = 0;
+        this.swaps = 0;
+        await this.quickSort(0, this.array.length - 1);
+        this.draw(-1, -1, -1, this.array.length);
+    }
+
+    async quickSort(low, high) {
+        if (low < high) {
+            const pi = await this.partition(low, high);
+            await this.quickSort(low, pi - 1);
+            await this.quickSort(pi + 1, high);
+        }
+    }
+
+    async partition(low, high) {
+        const pivot = this.array[high];
+        let i = low - 1;
+
+        for (let j = low; j < high; j++) {
+            this.comparisons++;
+            document.getElementById('quick-comparisons').textContent = this.comparisons;
+
+            this.draw(j, high, i + 1, 0);
+            await this.sleep(this.speed);
+
+            if (this.array[j] < pivot) {
+                i++;
+                [this.array[i], this.array[j]] = [this.array[j], this.array[i]];
+                this.swaps++;
+                document.getElementById('quick-swaps').textContent = this.swaps;
+
+                this.draw(j, high, i, 0);
+                await this.sleep(this.speed);
+            }
+        }
+
+        [this.array[i + 1], this.array[high]] = [this.array[high], this.array[i + 1]];
+        this.swaps++;
+        document.getElementById('quick-swaps').textContent = this.swaps;
+
+        this.draw(-1, -1, i + 1, 0);
+        await this.sleep(this.speed);
+
+        return i + 1;
+    }
+
+    draw(currentIdx = -1, pivotIdx = -1, partitionIdx = -1, sortedUntil = 0) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const barWidth = (this.canvas.width - 80) / this.array.length;
+        const maxHeight = this.canvas.height - 80;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = 40 + i * barWidth;
+            const height = (this.array[i] / 110) * maxHeight;
+            const y = this.canvas.height - 40 - height;
+
+            if (i >= sortedUntil && sortedUntil > 0) {
+                this.ctx.fillStyle = '#43e97b';
+            } else if (i === pivotIdx) {
+                this.ctx.fillStyle = '#f5576c';
+            } else if (i === currentIdx) {
+                this.ctx.fillStyle = '#ffd93d';
+            } else if (i === partitionIdx) {
+                this.ctx.fillStyle = '#ff8b94';
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            }
+
+            this.ctx.fillRect(x, y, barWidth - 4, height);
+
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '12px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + barWidth / 2 - 2, y - 5);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
 // ============================================
 // K-MEANS CLUSTERING
 // ============================================
@@ -2157,6 +2415,8 @@ document.addEventListener('DOMContentLoaded', () => {
     new BubbleSortVisualizer();
     new SelectionSortVisualizer();
     new InsertionSortVisualizer();
+    new MergeSortVisualizer();
+    new QuickSortVisualizer();
 
     // Heuristic Algorithms
     new AStarVisualizer();

@@ -604,6 +604,242 @@ funcion InsertionSort(array):
                     </div>
                 </section>
 
+                <!-- Merge Sort Section -->
+                <section class="algorithm-section" id="merge-sort-section">
+                    <div class="section-header">
+                        <h2>🔀 Merge Sort (Mezcla)</h2>
+                        <p class="section-description">Divide y conquista: divide el array recursivamente y luego
+                            fusiona las partes ordenadas</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array a Ordenar</h3>
+                            </div>
+                            <canvas id="merge-sort-canvas" width="600" height="300"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Merge Sort</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion MergeSort(array, inicio, fin):
+    si inicio < fin:
+        medio = (inicio + fin) / 2
+        
+        // Dividir recursivamente
+        MergeSort(array, inicio, medio)
+        MergeSort(array, medio + 1, fin)
+        
+        // Fusionar las mitades ordenadas
+        Merge(array, inicio, medio, fin)
+
+funcion Merge(array, inicio, medio, fin):
+    // Crear arrays temporales
+    izquierda = array[inicio...medio]
+    derecha = array[medio+1...fin]
+    
+    i = 0, j = 0, k = inicio
+    
+    // Fusionar comparando elementos
+    mientras i < longitud(izquierda) y j < longitud(derecha):
+        si izquierda[i] <= derecha[j]:
+            array[k] = izquierda[i]
+            i++
+        sino:
+            array[k] = derecha[j]
+            j++
+        k++
+    
+    // Copiar elementos restantes
+    copiar resto de izquierda y derecha a array
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n log n) siempre - Divide
+                                        el problema a la mitad recursivamente.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="merge-array-size">Tamaño del Array</label>
+                                <input type="range" id="merge-array-size" min="5" max="20" value="10" step="1">
+                                <span class="value-display" id="merge-size-value">10</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="merge-speed">Velocidad</label>
+                                <input type="range" id="merge-speed" min="10" max="200" value="100" step="10">
+                                <span class="value-display" id="merge-speed-value">100ms</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="merge-start">
+                                    <span class="btn-icon">▶</span> Ordenar
+                                </button>
+                                <button class="btn btn-secondary" id="merge-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="merge-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Fusiones:</span>
+                                    <span class="stat-value" id="merge-merges">0</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Merge Sort:</strong></p>
+                                <p>Algoritmo de divide y conquista. Divide el array recursivamente y fusiona las partes
+                                    ordenadas.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>O(n log n) garantizado</li>
+                                            <li>Algoritmo estable</li>
+                                            <li>Predecible y confiable</li>
+                                            <li>Funciona bien con datos grandes</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>Requiere O(n) memoria extra</li>
+                                            <li>No es in-place</li>
+                                            <li>Más lento que Quick Sort en promedio</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Sort Section -->
+                <section class="algorithm-section" id="quick-sort-section">
+                    <div class="section-header">
+                        <h2>⚡ Quick Sort (Rápido)</h2>
+                        <p class="section-description">Elige un pivot y particiona el array: menores a la izquierda,
+                            mayores a la derecha</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array a Ordenar</h3>
+                            </div>
+                            <canvas id="quick-sort-canvas" width="600" height="300"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Quick Sort</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion QuickSort(array, inicio, fin):
+    si inicio < fin:
+        // Particionar y obtener índice del pivot
+        pivotIndex = Partition(array, inicio, fin)
+        
+        // Ordenar recursivamente las dos mitades
+        QuickSort(array, inicio, pivotIndex - 1)
+        QuickSort(array, pivotIndex + 1, fin)
+
+funcion Partition(array, inicio, fin):
+    pivot = array[fin]  // Elegir último elemento como pivot
+    i = inicio - 1
+    
+    para j desde inicio hasta fin - 1:
+        si array[j] <= pivot:
+            i++
+            intercambiar array[i] con array[j]
+    
+    // Colocar pivot en su posición final
+    intercambiar array[i + 1] con array[fin]
+    retornar i + 1
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n log n) promedio, O(n²)
+                                        peor caso - El más rápido en la práctica.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="quick-array-size">Tamaño del Array</label>
+                                <input type="range" id="quick-array-size" min="5" max="20" value="10" step="1">
+                                <span class="value-display" id="quick-size-value">10</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="quick-speed">Velocidad</label>
+                                <input type="range" id="quick-speed" min="10" max="200" value="100" step="10">
+                                <span class="value-display" id="quick-speed-value">100ms</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="quick-start">
+                                    <span class="btn-icon">▶</span> Ordenar
+                                </button>
+                                <button class="btn btn-secondary" id="quick-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="quick-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Intercambios:</span>
+                                    <span class="stat-value" id="quick-swaps">0</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Quick Sort:</strong></p>
+                                <p>Uno de los algoritmos más rápidos en la práctica. Usa particionamiento recursivo
+                                    alrededor de un pivot.</p>
+
+                                <div class="pros-cons">
+                                    <div class="pros">
+                                        <strong>✅ Ventajas:</strong>
+                                        <ul>
+                                            <li>Muy rápido en promedio</li>
+                                            <li>In-place (poca memoria extra)</li>
+                                            <li>Buen rendimiento en caché</li>
+                                            <li>Usado en bibliotecas estándar</li>
+                                        </ul>
+                                    </div>
+                                    <div class="cons">
+                                        <strong>❌ Desventajas:</strong>
+                                        <ul>
+                                            <li>O(n²) en peor caso</li>
+                                            <li>No es estable</li>
+                                            <li>Sensible a elección de pivot</li>
+                                            <li>Recursión profunda posible</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
             <!-- End Sorting Tab -->
 

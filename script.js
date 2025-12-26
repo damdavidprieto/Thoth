@@ -1701,6 +1701,449 @@ class SelectionSortVisualizer {
     }
 }
 
+// Insertion Sort
+class InsertionSortVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('insertion-sort-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.array = [];
+        this.arraySize = 10;
+        this.speed = 100;
+        this.comparisons = 0;
+        this.shifts = 0;
+
+        this.setupEventListeners();
+        this.generateArray();
+    }
+
+    setupEventListeners() {
+        document.getElementById('insertion-array-size').addEventListener('input', (e) => {
+            this.arraySize = parseInt(e.target.value);
+            document.getElementById('insertion-size-value').textContent = this.arraySize;
+        });
+
+        document.getElementById('insertion-speed').addEventListener('input', (e) => {
+            this.speed = parseInt(e.target.value);
+            document.getElementById('insertion-speed-value').textContent = this.speed + 'ms';
+        });
+
+        document.getElementById('insertion-start').addEventListener('click', () => this.sort());
+        document.getElementById('insertion-reset').addEventListener('click', () => this.generateArray());
+    }
+
+    generateArray() {
+        this.array = [];
+        for (let i = 0; i < this.arraySize; i++) {
+            this.array.push(Math.floor(Math.random() * 100) + 10);
+        }
+        this.comparisons = 0;
+        this.shifts = 0;
+        document.getElementById('insertion-comparisons').textContent = '0';
+        document.getElementById('insertion-shifts').textContent = '0';
+        this.draw();
+    }
+
+    async sort() {
+        this.comparisons = 0;
+        this.shifts = 0;
+        const n = this.array.length;
+
+        for (let i = 1; i < n; i++) {
+            const key = this.array[i];
+            let j = i - 1;
+
+            this.draw(i, j, -1, i);
+            await this.sleep(this.speed);
+
+            while (j >= 0) {
+                this.comparisons++;
+                document.getElementById('insertion-comparisons').textContent = this.comparisons;
+
+                this.draw(i, j, -1, i);
+                await this.sleep(this.speed);
+
+                if (this.array[j] > key) {
+                    this.array[j + 1] = this.array[j];
+                    this.shifts++;
+                    document.getElementById('insertion-shifts').textContent = this.shifts;
+                    j--;
+                } else {
+                    break;
+                }
+            }
+
+            this.array[j + 1] = key;
+            this.draw(-1, -1, -1, i + 1);
+            await this.sleep(this.speed);
+        }
+
+        this.draw(-1, -1, -1, n);
+    }
+
+    draw(keyIdx = -1, compareIdx = -1, shiftIdx = -1, sortedUntil = 0) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const barWidth = (this.canvas.width - 80) / this.array.length;
+        const maxHeight = this.canvas.height - 80;
+
+        for (let i = 0; i < this.array.length; i++) {
+            const x = 40 + i * barWidth;
+            const height = (this.array[i] / 110) * maxHeight;
+            const y = this.canvas.height - 40 - height;
+
+            if (i < sortedUntil) {
+                this.ctx.fillStyle = '#43e97b';
+            } else if (i === keyIdx) {
+                this.ctx.fillStyle = '#ffd93d';
+            } else if (i === compareIdx) {
+                this.ctx.fillStyle = '#f5576c';
+            } else {
+                this.ctx.fillStyle = 'rgba(102, 126, 234, 0.7)';
+            }
+
+            this.ctx.fillRect(x, y, barWidth - 4, height);
+
+            this.ctx.fillStyle = '#fff';
+            this.ctx.font = '12px Inter';
+            this.ctx.textAlign = 'center';
+            this.ctx.fillText(this.array[i], x + barWidth / 2 - 2, y - 5);
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// ============================================
+// K-MEANS CLUSTERING
+// ============================================
+
+class KMeansVisualizer {
+    constructor() {
+        this.canvas = document.getElementById('kmeans-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.points = [];
+        this.centroids = [];
+        this.k = 3;
+        this.numPoints = 150;
+        this.speed = 500;
+        this.iteration = 0;
+        this.isRunning = false;
+        this.converged = false;
+
+        // Cluster colors
+        this.colors = [
+            '#ff6b6b', // Red
+            '#4ecdc4', // Teal
+            '#ffe66d', // Yellow
+            '#a8e6cf', // Green
+            '#ff8b94', // Pink
+            '#c7ceea', // Lavender
+            '#ffd93d', // Gold
+            '#6bcf7f'  // Mint
+        ];
+
+        this.setupEventListeners();
+        this.generatePoints();
+    }
+
+    setupEventListeners() {
+        document.getElementById('kmeans-k').addEventListener('input', (e) => {
+            this.k = parseInt(e.target.value);
+            document.getElementById('kmeans-k-value').textContent = this.k;
+        });
+
+        document.getElementById('kmeans-points').addEventListener('input', (e) => {
+            this.numPoints = parseInt(e.target.value);
+            document.getElementById('kmeans-points-value').textContent = this.numPoints;
+        });
+
+        document.getElementById('kmeans-speed').addEventListener('input', (e) => {
+            this.speed = parseInt(e.target.value);
+            document.getElementById('kmeans-speed-value').textContent = this.speed + 'ms';
+        });
+
+        document.getElementById('kmeans-generate').addEventListener('click', () => this.generatePoints());
+        document.getElementById('kmeans-start').addEventListener('click', () => this.runKMeans());
+        document.getElementById('kmeans-reset').addEventListener('click', () => this.reset());
+    }
+
+    generatePoints() {
+        this.points = [];
+        this.centroids = [];
+        this.iteration = 0;
+        this.converged = false;
+
+        // Generate random clusters for more interesting visualization
+        const numClusters = Math.floor(Math.random() * 3) + 2; // 2-4 natural clusters
+
+        for (let c = 0; c < numClusters; c++) {
+            const centerX = 100 + Math.random() * 400;
+            const centerY = 100 + Math.random() * 300;
+            const spread = 30 + Math.random() * 40;
+            const pointsInCluster = Math.floor(this.numPoints / numClusters);
+
+            for (let i = 0; i < pointsInCluster; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * spread;
+                this.points.push({
+                    x: centerX + Math.cos(angle) * radius,
+                    y: centerY + Math.sin(angle) * radius,
+                    cluster: -1
+                });
+            }
+        }
+
+        // Fill remaining points
+        while (this.points.length < this.numPoints) {
+            this.points.push({
+                x: 50 + Math.random() * 500,
+                y: 50 + Math.random() * 400,
+                cluster: -1
+            });
+        }
+
+        this.updateStatus('Puntos generados');
+        document.getElementById('kmeans-iteration').textContent = '0';
+        document.getElementById('kmeans-convergence').textContent = '-';
+        this.draw();
+    }
+
+    initializeCentroids() {
+        this.centroids = [];
+        // K-means++ initialization for better initial centroids
+
+        // First centroid: random point
+        const firstIdx = Math.floor(Math.random() * this.points.length);
+        this.centroids.push({
+            x: this.points[firstIdx].x,
+            y: this.points[firstIdx].y
+        });
+
+        // Remaining centroids: choose points far from existing centroids
+        for (let i = 1; i < this.k; i++) {
+            let maxDist = -1;
+            let farthestPoint = null;
+
+            for (const point of this.points) {
+                // Find minimum distance to any existing centroid
+                let minDistToCentroid = Infinity;
+                for (const centroid of this.centroids) {
+                    const dist = this.distance(point, centroid);
+                    minDistToCentroid = Math.min(minDistToCentroid, dist);
+                }
+
+                // Keep track of point with maximum minimum distance
+                if (minDistToCentroid > maxDist) {
+                    maxDist = minDistToCentroid;
+                    farthestPoint = point;
+                }
+            }
+
+            this.centroids.push({
+                x: farthestPoint.x,
+                y: farthestPoint.y
+            });
+        }
+    }
+
+    distance(p1, p2) {
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    assignClusters() {
+        let changed = false;
+
+        for (const point of this.points) {
+            let minDist = Infinity;
+            let closestCluster = 0;
+
+            // Find closest centroid
+            for (let i = 0; i < this.centroids.length; i++) {
+                const dist = this.distance(point, this.centroids[i]);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closestCluster = i;
+                }
+            }
+
+            if (point.cluster !== closestCluster) {
+                changed = true;
+                point.cluster = closestCluster;
+            }
+        }
+
+        return changed;
+    }
+
+    updateCentroids() {
+        const newCentroids = [];
+
+        for (let k = 0; k < this.k; k++) {
+            const clusterPoints = this.points.filter(p => p.cluster === k);
+
+            if (clusterPoints.length > 0) {
+                const sumX = clusterPoints.reduce((sum, p) => sum + p.x, 0);
+                const sumY = clusterPoints.reduce((sum, p) => sum + p.y, 0);
+
+                newCentroids.push({
+                    x: sumX / clusterPoints.length,
+                    y: sumY / clusterPoints.length
+                });
+            } else {
+                // Keep old centroid if cluster is empty
+                newCentroids.push({ ...this.centroids[k] });
+            }
+        }
+
+        // Check convergence
+        let converged = true;
+        for (let i = 0; i < this.k; i++) {
+            const dist = this.distance(this.centroids[i], newCentroids[i]);
+            if (dist > 0.1) {
+                converged = false;
+                break;
+            }
+        }
+
+        this.centroids = newCentroids;
+        return converged;
+    }
+
+    async runKMeans() {
+        if (this.isRunning) return;
+
+        this.isRunning = true;
+        this.iteration = 0;
+        this.converged = false;
+
+        // Initialize centroids
+        this.initializeCentroids();
+        this.updateStatus('Ejecutando...');
+        this.draw();
+        await this.sleep(this.speed);
+
+        // Main K-means loop
+        const maxIterations = 50;
+        while (this.iteration < maxIterations && !this.converged) {
+            this.iteration++;
+            document.getElementById('kmeans-iteration').textContent = this.iteration;
+
+            // Assignment step
+            const changed = this.assignClusters();
+            this.draw();
+            await this.sleep(this.speed);
+
+            if (!changed) {
+                this.converged = true;
+                break;
+            }
+
+            // Update step
+            const converged = this.updateCentroids();
+            this.draw();
+            await this.sleep(this.speed);
+
+            if (converged) {
+                this.converged = true;
+                break;
+            }
+        }
+
+        this.isRunning = false;
+
+        if (this.converged) {
+            this.updateStatus('Convergido ✓');
+            document.getElementById('kmeans-convergence').textContent = `Sí (iter ${this.iteration})`;
+        } else {
+            this.updateStatus('Máx iteraciones');
+            document.getElementById('kmeans-convergence').textContent = 'No';
+        }
+    }
+
+    updateStatus(status) {
+        document.getElementById('kmeans-status').textContent = status;
+    }
+
+    reset() {
+        this.isRunning = false;
+        this.iteration = 0;
+        this.converged = false;
+        this.centroids = [];
+
+        for (const point of this.points) {
+            point.cluster = -1;
+        }
+
+        document.getElementById('kmeans-iteration').textContent = '0';
+        document.getElementById('kmeans-status').textContent = 'Listo';
+        document.getElementById('kmeans-convergence').textContent = '-';
+        this.draw();
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw points
+        for (const point of this.points) {
+            if (point.cluster >= 0 && point.cluster < this.colors.length) {
+                this.ctx.fillStyle = this.colors[point.cluster];
+            } else {
+                this.ctx.fillStyle = 'rgba(150, 150, 150, 0.5)';
+            }
+
+            this.ctx.beginPath();
+            this.ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+
+        // Draw centroids
+        for (let i = 0; i < this.centroids.length; i++) {
+            const centroid = this.centroids[i];
+
+            // Draw outer glow
+            this.ctx.fillStyle = this.colors[i] + '40';
+            this.ctx.beginPath();
+            this.ctx.arc(centroid.x, centroid.y, 20, 0, Math.PI * 2);
+            this.ctx.fill();
+
+            // Draw centroid star
+            this.ctx.fillStyle = '#fff';
+            this.ctx.strokeStyle = this.colors[i];
+            this.ctx.lineWidth = 3;
+
+            // Draw star shape
+            const spikes = 5;
+            const outerRadius = 12;
+            const innerRadius = 6;
+
+            this.ctx.beginPath();
+            for (let j = 0; j < spikes * 2; j++) {
+                const radius = j % 2 === 0 ? outerRadius : innerRadius;
+                const angle = (j * Math.PI) / spikes - Math.PI / 2;
+                const x = centroid.x + Math.cos(angle) * radius;
+                const y = centroid.y + Math.sin(angle) * radius;
+
+                if (j === 0) {
+                    this.ctx.moveTo(x, y);
+                } else {
+                    this.ctx.lineTo(x, y);
+                }
+            }
+            this.ctx.closePath();
+            this.ctx.fill();
+            this.ctx.stroke();
+        }
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
 // ============================================
 // INITIALIZE ALL VISUALIZERS
 // ============================================
@@ -1709,8 +2152,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Basic Algorithms
     new LinearSearchVisualizer();
     new BinarySearchVisualizer();
+
+    // Sorting Algorithms
     new BubbleSortVisualizer();
     new SelectionSortVisualizer();
+    new InsertionSortVisualizer();
 
     // Heuristic Algorithms
     new AStarVisualizer();
@@ -1720,6 +2166,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Evolutionary Algorithms
     new GeneticAlgorithmVisualizer();
     new ParticleSwarmVisualizer();
+
+    // Machine Learning Algorithms
+    new KMeansVisualizer();
 
     // Initialize pseudocode panels
     initPseudocodePanels();

@@ -37,7 +37,10 @@
             <!-- Tab Navigation -->
             <div class="tab-navigation">
                 <button class="tab-button active" onclick="switchTab('basic')">
-                    📚 Algoritmos Básicos
+                    📚 Búsqueda & Estructuras
+                </button>
+                <button class="tab-button" onclick="switchTab('sorting')">
+                    🔄 Algoritmos de Ordenamiento
                 </button>
                 <button class="tab-button" onclick="switchTab('classic')">
                     🎯 Algoritmos Heurísticos
@@ -45,14 +48,17 @@
                 <button class="tab-button" onclick="switchTab('evolutionary')">
                     🧬 Algoritmos Evolutivos
                 </button>
+                <button class="tab-button" onclick="switchTab('ml')">
+                    🤖 Machine Learning
+                </button>
             </div>
 
             <!-- Basic Algorithms Tab Content -->
             <div id="basic-tab" class="tab-content active">
                 <div class="tab-intro">
-                    <h2>📚 Algoritmos Básicos</h2>
-                    <p>Algoritmos fundamentales ordenados por nivel de dificultad. Perfectos para aprender los conceptos
-                        básicos.</p>
+                    <h2>📚 Búsqueda & Estructuras de Datos</h2>
+                    <p>Algoritmos de búsqueda y estructuras de datos fundamentales. La base para entender cómo encontrar
+                        y organizar información.</p>
                 </div>
 
                 <!-- Linear Search Section -->
@@ -219,12 +225,26 @@ funcion BusquedaBinaria(array_ordenado, objetivo):
                     </div>
                 </section>
 
+            </div>
+
+            <!-- Sorting Algorithms Tab Content -->
+            <div id="sorting-tab" class="tab-content">
+                <div class="tab-intro">
+                    <h2>🔄 Algoritmos de Ordenamiento</h2>
+                    <p>Algoritmos para ordenar datos de menor a mayor. Desde los más simples hasta los más eficientes.
+                    </p>
+                    <div class="quote-box">
+                        <p class="quote-text">"Ordenar es el primer paso hacia la eficiencia. Un array ordenado abre las
+                            puertas a búsquedas rápidas y operaciones optimizadas." - "Fundamentos de algoritmos"</p>
+                    </div>
+                </div>
+
                 <!-- Bubble Sort Section -->
                 <section class="algorithm-section" id="bubble-sort-section">
                     <div class="section-header">
-                        <h2>🫧 Ordenamiento Burbuja</h2>
-                        <p class="section-description">Algoritmo de ordenamiento simple que compara elementos adyacentes
-                        </p>
+                        <h2>🫧 Bubble Sort (Burbuja)</h2>
+                        <p class="section-description">El algoritmo más simple: compara pares adyacentes y los
+                            intercambia si están en orden incorrecto</p>
                     </div>
 
                     <div class="algorithm-container">
@@ -260,8 +280,8 @@ funcion BubbleSort(array):
     
     retornar array
 </pre>
-                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) - Compara cada par de
-                                        elementos adyacentes repetidamente.</p>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) - Los elementos más
+                                        grandes "burbujean" hacia el final en cada pasada.</p>
                                 </div>
                             </div>
                         </div>
@@ -303,8 +323,8 @@ funcion BubbleSort(array):
 
                             <div class="info-box">
                                 <p><strong>Sobre Bubble Sort:</strong></p>
-                                <p>Los elementos más grandes "burbujean" hacia el final del array en cada pasada. Simple
-                                    pero ineficiente para arrays grandes.</p>
+                                <p>Simple pero ineficiente para arrays grandes. Útil para aprender los conceptos básicos
+                                    de ordenamiento.</p>
                             </div>
                         </div>
                     </div>
@@ -313,8 +333,9 @@ funcion BubbleSort(array):
                 <!-- Selection Sort Section -->
                 <section class="algorithm-section" id="selection-sort-section">
                     <div class="section-header">
-                        <h2>🎯 Ordenamiento por Selección</h2>
-                        <p class="section-description">Encuentra el mínimo y lo coloca en su posición correcta</p>
+                        <h2>🎯 Selection Sort (Selección)</h2>
+                        <p class="section-description">Encuentra el mínimo y lo coloca en su posición correcta en cada
+                            iteración</p>
                     </div>
 
                     <div class="algorithm-container">
@@ -349,8 +370,8 @@ funcion SelectionSort(array):
     
     retornar array
 </pre>
-                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) - Encuentra el mínimo
-                                        en cada iteración y lo coloca en su posición.</p>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) - Hace menos
+                                        intercambios que Bubble Sort.</p>
                                 </div>
                             </div>
                         </div>
@@ -392,14 +413,103 @@ funcion SelectionSort(array):
 
                             <div class="info-box">
                                 <p><strong>Sobre Selection Sort:</strong></p>
-                                <p>En cada pasada, encuentra el elemento más pequeño y lo coloca en su posición final.
-                                    Hace menos intercambios que Bubble Sort.</p>
+                                <p>Encuentra el elemento más pequeño y lo coloca en su posición final. Más eficiente en
+                                    intercambios que Bubble Sort.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Insertion Sort Section -->
+                <section class="algorithm-section" id="insertion-sort-section">
+                    <div class="section-header">
+                        <h2>📥 Insertion Sort (Inserción)</h2>
+                        <p class="section-description">Construye el array ordenado insertando elementos uno por uno en
+                            su posición correcta</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Array a Ordenar</h3>
+                            </div>
+                            <canvas id="insertion-sort-canvas" width="600" height="300"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Insertion Sort</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion InsertionSort(array):
+    n = longitud(array)
+    
+    para i desde 1 hasta n - 1:
+        clave = array[i]
+        j = i - 1
+        
+        // Mover elementos mayores que clave una posición adelante
+        mientras j >= 0 y array[j] > clave:
+            array[j + 1] = array[j]
+            j = j - 1
+        
+        // Insertar clave en su posición correcta
+        array[j + 1] = clave
+    
+    retornar array
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n²) peor caso, O(n) mejor
+                                        caso - Muy eficiente para arrays pequeños o casi ordenados.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="insertion-array-size">Tamaño del Array</label>
+                                <input type="range" id="insertion-array-size" min="5" max="20" value="10" step="1">
+                                <span class="value-display" id="insertion-size-value">10</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="insertion-speed">Velocidad</label>
+                                <input type="range" id="insertion-speed" min="10" max="200" value="100" step="10">
+                                <span class="value-display" id="insertion-speed-value">100ms</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="insertion-start">
+                                    <span class="btn-icon">▶</span> Ordenar
+                                </button>
+                                <button class="btn btn-secondary" id="insertion-reset">
+                                    <span class="btn-icon">↻</span> Nuevo Array
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Comparaciones:</span>
+                                    <span class="stat-value" id="insertion-comparisons">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Desplazamientos:</span>
+                                    <span class="stat-value" id="insertion-shifts">0</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre Insertion Sort:</strong></p>
+                                <p>Como ordenar cartas en tu mano. Eficiente para arrays pequeños y datos casi
+                                    ordenados.</p>
                             </div>
                         </div>
                     </div>
                 </section>
 
             </div>
+            <!-- End Sorting Tab -->
 
             <!-- Classic Algorithms Tab Content -->
             <div id="classic-tab" class="tab-content">
@@ -1145,6 +1255,164 @@ funcion ParticleSwarmOptimization(num_particulas, max_iteraciones):
 
             </div>
             <!-- End Evolutionary Algorithms Tab -->
+
+            <!-- Machine Learning Tab Content -->
+            <div id="ml-tab" class="tab-content">
+                <div class="tab-intro">
+                    <h2>🤖 Machine Learning</h2>
+                    <p>Algoritmos de aprendizaje automático para descubrir patrones y estructuras en los datos.</p>
+                    <div class="quote-box">
+                        <p class="quote-text">"Los datos tienen historias que contar. Los algoritmos de clustering nos
+                            ayudan a escucharlas." - "Filosofía del aprendizaje no supervisado"</p>
+                    </div>
+                </div>
+
+                <!-- K-means Clustering Section -->
+                <section class="algorithm-section" id="kmeans-section">
+                    <div class="section-header">
+                        <h2>🎨 K-means Clustering</h2>
+                        <p class="section-description">Agrupamiento de datos en K clusters mediante iteración y
+                            refinamiento</p>
+                    </div>
+
+                    <div class="algorithm-container">
+                        <div class="visualization-panel glass-panel">
+                            <div class="panel-header">
+                                <h3>Espacio de Datos 2D</h3>
+                                <div class="legend">
+                                    <span class="legend-item"><span class="color-box"
+                                            style="background: #ff6b6b;"></span> Cluster 1</span>
+                                    <span class="legend-item"><span class="color-box"
+                                            style="background: #4ecdc4;"></span> Cluster 2</span>
+                                    <span class="legend-item"><span class="color-box"
+                                            style="background: #ffe66d;"></span> Cluster 3</span>
+                                    <span class="legend-item"><span class="color-box"
+                                            style="background: #a8e6cf;"></span> Cluster 4</span>
+                                    <span class="legend-item"><span class="color-box"
+                                            style="background: #ff8b94;"></span> Cluster 5</span>
+                                    <span class="legend-item">⭐ Centroides</span>
+                                </div>
+                            </div>
+                            <canvas id="kmeans-canvas" width="600" height="500"></canvas>
+
+                            <div class="pseudocode-box collapsible">
+                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                    <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo K-means</h4>
+                                </div>
+                                <div class="pseudocode-content">
+                                    <pre class="pseudocode">
+funcion KMeans(puntos, K, max_iteraciones):
+    // 1. Inicialización: seleccionar K centroides aleatorios
+    centroides = seleccionar_K_puntos_aleatorios(puntos, K)
+    
+    para iter desde 1 hasta max_iteraciones:
+        // 2. Asignación: asignar cada punto al centroide más cercano
+        para cada punto en puntos:
+            distancias = []
+            
+            para cada centroide en centroides:
+                distancia = distancia_euclidiana(punto, centroide)
+                distancias.agregar(distancia)
+            
+            // Asignar al cluster del centroide más cercano
+            punto.cluster = indice_del_minimo(distancias)
+        
+        // 3. Actualización: recalcular centroides
+        nuevos_centroides = []
+        
+        para k desde 0 hasta K - 1:
+            puntos_del_cluster = filtrar(puntos, cluster == k)
+            
+            si puntos_del_cluster no está vacío:
+                // Centroide = promedio de todos los puntos del cluster
+                nuevo_x = promedio([p.x para p en puntos_del_cluster])
+                nuevo_y = promedio([p.y para p en puntos_del_cluster])
+                nuevos_centroides.agregar({x: nuevo_x, y: nuevo_y})
+            sino:
+                // Mantener centroide anterior si cluster vacío
+                nuevos_centroides.agregar(centroides[k])
+        
+        // 4. Verificar convergencia
+        si centroides == nuevos_centroides:
+            romper  // Algoritmo ha convergido
+        
+        centroides = nuevos_centroides
+    
+    retornar centroides, asignaciones
+
+funcion distancia_euclidiana(p1, p2):
+    retornar sqrt((p1.x - p2.x)² + (p1.y - p2.y)²)
+</pre>
+                                    <p class="pseudocode-note"><strong>Complejidad:</strong> O(n × K × i) donde n =
+                                        número de puntos, K = número de clusters, i = iteraciones. El algoritmo converge
+                                        cuando los centroides dejan de moverse.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="controls-panel glass-panel">
+                            <h3>Controles</h3>
+                            <div class="control-group">
+                                <label for="kmeans-k">Número de Clusters (K)</label>
+                                <input type="range" id="kmeans-k" min="2" max="8" value="3" step="1">
+                                <span class="value-display" id="kmeans-k-value">3</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="kmeans-points">Número de Puntos</label>
+                                <input type="range" id="kmeans-points" min="50" max="300" value="150" step="50">
+                                <span class="value-display" id="kmeans-points-value">150</span>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="kmeans-speed">Velocidad de Animación</label>
+                                <input type="range" id="kmeans-speed" min="100" max="2000" value="500" step="100">
+                                <span class="value-display" id="kmeans-speed-value">500ms</span>
+                            </div>
+
+                            <div class="button-group">
+                                <button class="btn btn-primary" id="kmeans-generate">
+                                    <span class="btn-icon">🎲</span> Generar Puntos
+                                </button>
+                                <button class="btn btn-primary" id="kmeans-start">
+                                    <span class="btn-icon">▶</span> Ejecutar K-means
+                                </button>
+                                <button class="btn btn-secondary" id="kmeans-reset">
+                                    <span class="btn-icon">↻</span> Reiniciar
+                                </button>
+                            </div>
+
+                            <div class="stats-panel">
+                                <h4>Estadísticas</h4>
+                                <div class="stat-item">
+                                    <span class="stat-label">Iteración:</span>
+                                    <span class="stat-value" id="kmeans-iteration">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Estado:</span>
+                                    <span class="stat-value" id="kmeans-status">Listo</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Convergencia:</span>
+                                    <span class="stat-value" id="kmeans-convergence">-</span>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <p><strong>Sobre K-means:</strong></p>
+                                <p>Algoritmo de clustering que agrupa datos en K clusters. Itera entre asignar puntos al
+                                    centroide más cercano y recalcular centroides hasta convergencia.</p>
+                                <div class="quote-mini">
+                                    <em>"Los patrones emergen cuando dejamos que los datos hablen por sí mismos." -
+                                        "Aprendizaje no supervisado"</em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <!-- End Machine Learning Tab -->
 
             <!-- Final Wisdom -->
             <div class="wisdom-section">

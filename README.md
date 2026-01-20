@@ -1,10 +1,10 @@
-# 🧠 Laboratorio Interactivo de Algoritmos
+# 🧠 Thoth - Laboratorio Interactivo de Algoritmos
 
-
+> *"En honor a Thoth, dios egipcio de la sabiduría, las matemáticas y el conocimiento"*
 
 Una aplicación web moderna e interactiva para visualizar y experimentar con algoritmos heurísticos de optimización y búsqueda.
 
-![Laboratorio Interactivo de Algoritmos](https://img.shields.io/badge/Estado-Activo-success)
+![Thoth](https://img.shields.io/badge/Estado-Activo-success)
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
@@ -128,7 +128,7 @@ Técnica de optimización inspirada en la evolución biológica que utiliza sele
 ## 📁 Estructura del Proyecto
 
 ```
-Laboratorio-Interactivo-Algoritmos/
+Thoth/
 ├── index.html      # Estructura HTML principal
 ├── styles.css      # Sistema de diseño y estilos
 ├── script.js       # Lógica de los algoritmos y visualizaciones

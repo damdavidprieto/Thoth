@@ -1,5 +1,8 @@
 name: Deploy static content to Pages
 
+# Triggering new deployment
+
+
 on:
   # Runs on pushes targeting the default branch
   push:

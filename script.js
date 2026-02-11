@@ -24,6 +24,7 @@ class AStarVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         // Keep aspect ratio or fixed height? Let's use the CSS controlled height (max 300px on mobile) or efficient default
         // Actually, better to just match clientWidth/Height
@@ -337,6 +338,7 @@ class HillClimbingVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
@@ -522,6 +524,7 @@ class SimulatedAnnealingVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
@@ -728,6 +731,7 @@ class GeneticAlgorithmVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
@@ -1016,6 +1020,7 @@ class ParticleSwarmVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
@@ -1254,7 +1259,7 @@ function switchTab(tabName) {
         // Trigger resize to fix canvas dimensions in the newly visible tab
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
-        }, 10);
+        }, 50);
     }
 
     // Add active class to clicked button
@@ -1315,6 +1320,7 @@ class LinearSearchVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -1434,6 +1440,7 @@ class BinarySearchVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -1565,6 +1572,7 @@ class BubbleSortVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -1683,6 +1691,7 @@ class SelectionSortVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -1805,6 +1814,7 @@ class InsertionSortVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -1928,6 +1938,7 @@ class MergeSortVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -2069,6 +2080,7 @@ class QuickSortVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();
@@ -2222,6 +2234,7 @@ class KMeansVisualizer {
 
     resize() {
         const container = this.canvas.parentElement;
+        if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
         this.canvas.height = this.canvas.clientHeight || 300;
         this.draw();

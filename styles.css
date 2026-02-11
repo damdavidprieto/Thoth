@@ -278,6 +278,7 @@ canvas:hover {
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.1);
     outline: none;
+    appearance: none;
     -webkit-appearance: none;
 }
 
@@ -1034,4 +1035,119 @@ canvas:hover {
     color: var(--text-secondary);
     margin-bottom: 0.3rem;
     line-height: 1.4;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+    }
+
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .header {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .logo {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .logo-icon {
+        font-size: 2.5rem;
+    }
+
+    .tagline {
+        font-size: 1rem;
+        padding: 0 var(--spacing-sm);
+    }
+
+    .tab-navigation {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: var(--spacing-sm);
+        gap: var(--spacing-sm);
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+
+    .tab-button {
+        flex: 0 0 auto; /* Don't shrink */
+        white-space: nowrap;
+        font-size: 0.9rem;
+        padding: var(--spacing-sm);
+    }
+
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .algorithm-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .visualization-panel,
+    .controls-panel {
+        padding: var(--spacing-md);
+    }
+
+    /* Canvas responsiveness */
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 300px; /* Limit height on mobile */
+    }
+
+    .controls-panel {
+        order: 2; /* Ensure controls are below canvas on mobile if not already */
+    }
+
+    .stats-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .stat-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+}
+
+/* Fix for very small screens */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.8rem;
+    }
+    
+    .logo-icon {
+        font-size: 2rem;
+    }
+
+    .tab-button {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.85rem;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .button-group {
+        flex-direction: row; /* Stack buttons horizontally if they fit, or vertically */
+        flex-wrap: wrap;
+    }
+    
+    .button-group .btn {
+        flex: 1;
+        min-width: 120px;
+    }
 }

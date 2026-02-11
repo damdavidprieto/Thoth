@@ -18,6 +18,19 @@ class AStarVisualizer {
 
         this.initGrid();
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        // Keep aspect ratio or fixed height? Let's use the CSS controlled height (max 300px on mobile) or efficient default
+        // Actually, better to just match clientWidth/Height
+        this.canvas.height = this.canvas.clientHeight || 400; // Default if 0
+        
+        // Re-calculate cell size
+        this.cellSize = this.canvas.width / this.gridSize;
         this.draw();
     }
 
@@ -318,6 +331,14 @@ class HillClimbingVisualizer {
         this.history = [];
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
     }
 
@@ -495,6 +516,14 @@ class SimulatedAnnealingVisualizer {
         this.history = [];
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
     }
 
@@ -693,6 +722,14 @@ class GeneticAlgorithmVisualizer {
         this.currentGeneration = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
     }
 
@@ -973,6 +1010,14 @@ class ParticleSwarmVisualizer {
         this.currentIteration = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
         this.drawFunction();
     }
 
@@ -1259,7 +1304,16 @@ class LinearSearchVisualizer {
         this.comparisons = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -1369,7 +1423,16 @@ class BinarySearchVisualizer {
         this.comparisons = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -1491,7 +1554,16 @@ class BubbleSortVisualizer {
         this.swaps = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -1600,7 +1672,16 @@ class SelectionSortVisualizer {
         this.swaps = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -1713,7 +1794,16 @@ class InsertionSortVisualizer {
         this.shifts = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -1827,7 +1917,16 @@ class MergeSortVisualizer {
         this.merges = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -1959,7 +2058,16 @@ class QuickSortVisualizer {
         this.swaps = 0;
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generateArray();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {
@@ -2103,7 +2211,16 @@ class KMeansVisualizer {
         ];
 
         this.setupEventListeners();
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
         this.generatePoints();
+    }
+
+    resize() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.clientWidth;
+        this.canvas.height = this.canvas.clientHeight || 300;
+        this.draw();
     }
 
     setupEventListeners() {

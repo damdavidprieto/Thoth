@@ -1251,6 +1251,10 @@ function switchTab(tabName) {
     const selectedTab = document.getElementById(`${tabName}-tab`);
     if (selectedTab) {
         selectedTab.classList.add('active');
+        // Trigger resize to fix canvas dimensions in the newly visible tab
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+        }, 10);
     }
 
     // Add active class to clicked button

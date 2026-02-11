@@ -176,3 +176,6 @@ Si tienes preguntas o sugerencias, no dudes en abrir un issue en el repositorio.
 ---
 
 **¡Disfruta explorando los algoritmos heurísticos!** 🚀
+
+<!-- Trigger deployment -->
+

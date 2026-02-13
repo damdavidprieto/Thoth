@@ -1044,11 +1044,23 @@ canvas:hover {
         --spacing-xl: 2rem;
     }
 
-    .container {
+    html, body {
+        overflow-x: hidden;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .container, 
+    .main-content, 
+    .header, 
+    .algorithm-container, 
+    .algorithm-section {
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
-        max-width: none !important;
+        max-width: 100% !important;
         box-sizing: border-box !important;
     }
 

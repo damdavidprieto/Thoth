@@ -211,6 +211,20 @@ canvas:hover {
     box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
 }
 
+/* Grid de A*: arrastre táctil sin que la página haga scroll, y sin tope de alto en móvil
+   (el tope de 300px recortaba las últimas filas de la cuadrícula) */
+#astar-canvas {
+    touch-action: none;
+    max-height: none !important;
+}
+
+.astar-message {
+    min-height: 1.4em;
+    margin-top: var(--spacing-sm);
+    font-size: 0.9rem;
+    color: var(--warning-color);
+}
+
 /* Legend */
 .legend {
     display: flex;

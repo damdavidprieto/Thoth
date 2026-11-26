@@ -15,6 +15,10 @@ class AStarVisualizer {
         this.isDrawing = false;
         this.isDragging = null;
         this.animationSpeed = 50;
+        this.running = false;
+        this.runId = 0; // Se incrementa al cancelar para detener la ejecución en curso
+        this.paintValue = true;
+        this.lastCellKey = null;
 
         this.initGrid();
         this.setupEventListeners();
@@ -26,9 +30,8 @@ class AStarVisualizer {
         const container = this.canvas.parentElement;
         if (!container.clientWidth) return;
         this.canvas.width = container.clientWidth;
-        // Keep aspect ratio or fixed height? Let's use the CSS controlled height (max 300px on mobile) or efficient default
-        // Actually, better to just match clientWidth/Height
-        this.canvas.height = this.canvas.clientHeight || 400; // Default if 0
+        // La cuadrícula es cuadrada: el alto sigue al ancho para que ninguna fila quede fuera del canvas
+        this.canvas.height = this.canvas.width;
         
         // Re-calculate cell size
         this.cellSize = this.canvas.width / this.gridSize;
@@ -53,15 +56,19 @@ class AStarVisualizer {
     }
 
     setupEventListeners() {
-        this.canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-        this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('mouseup', () => this.handleMouseUp());
+        // Pointer events cubren ratón, táctil y lápiz
+        this.canvas.addEventListener('pointerdown', (e) => this.handlePointerDown(e));
+        this.canvas.addEventListener('pointermove', (e) => this.handlePointerMove(e));
+        this.canvas.addEventListener('pointerup', (e) => this.handlePointerUp(e));
+        this.canvas.addEventListener('pointercancel', (e) => this.handlePointerUp(e));
 
         document.getElementById('grid-size').addEventListener('input', (e) => {
+            this.cancelRun();
             this.gridSize = parseInt(e.target.value);
             document.getElementById('grid-size-value').textContent = `${this.gridSize}x${this.gridSize}`;
             this.cellSize = this.canvas.width / this.gridSize;
             this.walls.clear();
+            this.clampEndpoints();
             this.initGrid();
             this.draw();
         });
@@ -74,6 +81,7 @@ class AStarVisualizer {
         document.getElementById('astar-start').addEventListener('click', () => this.runAStar());
         document.getElementById('astar-reset').addEventListener('click', () => this.reset());
         document.getElementById('astar-clear-walls').addEventListener('click', () => {
+            this.cancelRun();
             this.walls.clear();
             this.draw();
         });
@@ -98,49 +106,100 @@ class AStarVisualizer {
         };
     }
 
-    handleMouseDown(e) {
+    // Durante una ejecución el grid no se edita para no mezclar estados
+    isEditable() {
+        return !this.running;
+    }
+
+    handlePointerDown(e) {
+        if (!this.isEditable()) return;
+        // Captura el puntero: el arrastre sigue aunque el dedo o el cursor salga del canvas
+        this.canvas.setPointerCapture(e.pointerId);
+
         const cell = this.getCellFromMouse(e);
 
-        if (cell.x === this.start.x && cell.y === this.start.y) {
+        if (this.isSameCell(cell, this.start)) {
             this.isDragging = 'start';
-        } else if (cell.x === this.end.x && cell.y === this.end.y) {
+        } else if (this.isSameCell(cell, this.end)) {
             this.isDragging = 'end';
         } else {
+            // El primer toque decide si el arrastre pinta muros o los borra
             this.isDrawing = true;
-            this.toggleWall(cell);
+            this.paintValue = !this.walls.has(this.cellKey(cell));
+            this.lastCellKey = this.cellKey(cell);
+            this.paintCell(cell);
         }
     }
 
-    handleMouseMove(e) {
+    handlePointerMove(e) {
+        if (!this.isEditable()) return;
         const cell = this.getCellFromMouse(e);
 
-        if (this.isDragging === 'start') {
-            this.start = cell;
-            this.draw();
-        } else if (this.isDragging === 'end') {
-            this.end = cell;
-            this.draw();
+        if (this.isDragging) {
+            this.moveEndpoint(this.isDragging, cell);
         } else if (this.isDrawing) {
-            this.toggleWall(cell);
+            // Solo actúa al cambiar de celda; si no, cada movimiento dentro de la misma celda la alternaría
+            const key = this.cellKey(cell);
+            if (key === this.lastCellKey) return;
+            this.lastCellKey = key;
+            this.paintCell(cell);
         }
     }
 
-    handleMouseUp() {
+    handlePointerUp(e) {
+        if (this.canvas.hasPointerCapture(e.pointerId)) {
+            this.canvas.releasePointerCapture(e.pointerId);
+        }
         this.isDrawing = false;
         this.isDragging = null;
+        this.lastCellKey = null;
     }
 
-    toggleWall(cell) {
-        const key = `${cell.x},${cell.y}`;
-        if ((cell.x !== this.start.x || cell.y !== this.start.y) &&
-            (cell.x !== this.end.x || cell.y !== this.end.y)) {
-            if (this.walls.has(key)) {
-                this.walls.delete(key);
-            } else {
-                this.walls.add(key);
-            }
-            this.draw();
+    cellKey(cell) {
+        return `${cell.x},${cell.y}`;
+    }
+
+    isSameCell(a, b) {
+        return a.x === b.x && a.y === b.y;
+    }
+
+    paintCell(cell) {
+        if (this.isSameCell(cell, this.start) || this.isSameCell(cell, this.end)) return;
+        if (this.paintValue) {
+            this.walls.add(this.cellKey(cell));
+        } else {
+            this.walls.delete(this.cellKey(cell));
         }
+        this.draw();
+    }
+
+    moveEndpoint(which, cell) {
+        const other = which === 'start' ? this.end : this.start;
+        if (this.isSameCell(cell, other)) return; // Inicio y final nunca comparten celda
+        this.walls.delete(this.cellKey(cell)); // Un extremo no puede quedar sobre un muro
+        this[which] = { x: cell.x, y: cell.y };
+        this.draw();
+    }
+
+    // Al reducir el grid, inicio y final se llevan al borde válido más cercano
+    clampEndpoints() {
+        const max = this.gridSize - 1;
+        this.start = { x: Math.min(this.start.x, max), y: Math.min(this.start.y, max) };
+        this.end = { x: Math.min(this.end.x, max), y: Math.min(this.end.y, max) };
+        if (this.isSameCell(this.start, this.end)) {
+            this.end = this.isSameCell(this.start, { x: max, y: max }) ? { x: 0, y: 0 } : { x: max, y: max };
+        }
+    }
+
+    // Detiene una ejecución en curso: el bucle de búsqueda comprueba runId y sale
+    cancelRun() {
+        this.runId++;
+        this.running = false;
+    }
+
+    setMessage(text) {
+        const el = document.getElementById('astar-message');
+        if (el) el.textContent = text;
     }
 
     heuristic(a, b) {
@@ -169,6 +228,18 @@ class AStarVisualizer {
     }
 
     async runAStar() {
+        if (this.running) return; // Evita ejecuciones solapadas sobre el mismo grid
+        this.running = true;
+        const runId = ++this.runId;
+        try {
+            await this.searchPath(runId);
+        } finally {
+            if (runId === this.runId) this.running = false;
+        }
+    }
+
+    async searchPath(runId) {
+        this.setMessage('');
         this.initGrid();
         const startTime = performance.now();
 
@@ -198,7 +269,8 @@ class AStarVisualizer {
             // Reached the goal
             if (current.x === endNode.x && current.y === endNode.y) {
                 const path = this.reconstructPath(current);
-                await this.animatePath(path);
+                await this.animatePath(path, runId);
+                if (runId !== this.runId) return;
 
                 const endTime = performance.now();
                 document.getElementById('astar-visited').textContent = visitedCount;
@@ -214,6 +286,7 @@ class AStarVisualizer {
             // Visualize
             this.draw();
             await this.sleep(this.animationSpeed);
+            if (runId !== this.runId) return;
 
             const neighbors = this.getNeighbors(current);
 
@@ -235,8 +308,13 @@ class AStarVisualizer {
             }
         }
 
-        // No path found
-        alert('No se encontró un camino!');
+        // Sin camino: se informa en la página en lugar de bloquearla con alert()
+        if (runId !== this.runId) return;
+        const endTime = performance.now();
+        document.getElementById('astar-visited').textContent = visitedCount;
+        document.getElementById('astar-path-length').textContent = 'Sin camino';
+        document.getElementById('astar-time').textContent = `${(endTime - startTime).toFixed(2)}ms`;
+        this.setMessage('No hay camino entre el inicio y el final. Quita algunos obstáculos o mueve un extremo.');
     }
 
     reconstructPath(node) {
@@ -251,8 +329,9 @@ class AStarVisualizer {
         return path;
     }
 
-    async animatePath(path) {
+    async animatePath(path, runId) {
         for (const node of path) {
+            if (runId !== this.runId) return;
             node.isPath = true;
             this.draw();
             await this.sleep(30);
@@ -264,10 +343,12 @@ class AStarVisualizer {
     }
 
     reset() {
+        this.cancelRun();
         this.initGrid();
         document.getElementById('astar-visited').textContent = '0';
         document.getElementById('astar-path-length').textContent = '0';
         document.getElementById('astar-time').textContent = '0ms';
+        this.setMessage('');
         this.draw();
     }
 

@@ -5,7 +5,7 @@
 
 // Colores de las barras según su estado
 const BAR = {
-    idle: 'rgba(102, 126, 234, 0.7)',
+    idle: 'rgba(255, 42, 74, 0.7)',
     done: '#43e97b', // ordenada o ya procesada
     current: '#ffd93d', // posición o elemento en curso
     compare: '#f5576c', // elemento que se compara o mínimo/pivote

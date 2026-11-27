@@ -48,6 +48,25 @@ function initTabs() {
     activate(fromHash >= 0 ? fromHash : 0);
 }
 
+// El icono inicial de pestañas y títulos va en una insignia de tamaño fijo para que se vea bien
+const LEADING_ICON = /^(\p{Extended_Pictographic}[\uFE0F\u200D]*)+\s*/u;
+
+function initIconBadges() {
+    document.querySelectorAll('.tab-button, .section-header h2, .tab-intro h2').forEach((el) => {
+        const first = el.firstChild;
+        if (!first || first.nodeType !== Node.TEXT_NODE) return;
+        const match = first.textContent.match(LEADING_ICON);
+        if (!match) return;
+
+        const badge = document.createElement('span');
+        badge.className = 'icon-badge';
+        badge.setAttribute('aria-hidden', 'true');
+        badge.textContent = match[0].trim();
+        first.textContent = first.textContent.slice(match[0].length);
+        el.prepend(badge);
+    });
+}
+
 // Pseudocódigo colapsable: botón accesible con teclado y animación sin alturas fijas
 function initPseudocode() {
     document.querySelectorAll('.pseudocode-box.collapsible').forEach((box) => {
@@ -124,6 +143,7 @@ function initSectionNav() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabs();
+    initIconBadges();
     initPseudocode();
     initRiddles();
     initSectionNav();

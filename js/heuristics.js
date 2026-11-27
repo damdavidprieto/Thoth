@@ -285,7 +285,7 @@ class AStarVisualizer extends Visualizer {
                 ctx.fillStyle = node.isPath
                     ? COLORS.primary
                     : node.visited
-                      ? 'rgba(102, 126, 234, 0.3)'
+                      ? 'rgba(255, 42, 74, 0.3)'
                       : 'rgba(255, 255, 255, 0.02)';
                 ctx.fillRect(x * cell, y * cell, cell, cell);
                 ctx.strokeStyle = COLORS.gridLine;

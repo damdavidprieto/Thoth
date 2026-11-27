@@ -2,7 +2,7 @@
    search.js — búsqueda lineal y binaria sobre arrays de números.
    ========================================================================== */
 
-const CELL_IDLE = 'rgba(102, 126, 234, 0.3)';
+const CELL_IDLE = 'rgba(255, 42, 74, 0.3)';
 
 /**
  * Base de las búsquedas: genera el array, dibuja las celdas y muestra
@@ -175,8 +175,8 @@ class BinarySearchVisualizer extends SearchVisualizer {
     draw() {
         this.drawCells((i) => {
             if (i === this.mid) return this.hitColor();
-            if (i >= this.left && i <= this.right) return 'rgba(102, 126, 234, 0.5)';
-            return 'rgba(102, 126, 234, 0.1)';
+            if (i >= this.left && i <= this.right) return 'rgba(255, 42, 74, 0.5)';
+            return 'rgba(255, 42, 74, 0.1)';
         });
     }
 }

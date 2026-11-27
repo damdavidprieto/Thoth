@@ -4,7 +4,7 @@
    ========================================================================== */
 
 const COLORS = {
-    primary: '#667eea',
+    primary: '#ff2a4a',
     accent: '#43e97b',
     danger: '#f5576c',
     highlight: '#ffd93d',

@@ -37,19 +37,19 @@
 
             <!-- Tab Navigation -->
             <div class="tab-navigation">
-                <button class="tab-button active" onclick="switchTab('basic')">
+                <button class="tab-button" data-tab="basic">
                     📚 Búsqueda & Estructuras
                 </button>
-                <button class="tab-button" onclick="switchTab('sorting')">
+                <button class="tab-button" data-tab="sorting">
                     🔄 Algoritmos de Ordenamiento
                 </button>
-                <button class="tab-button" onclick="switchTab('classic')">
+                <button class="tab-button" data-tab="classic">
                     🎯 Algoritmos Heurísticos
                 </button>
-                <button class="tab-button" onclick="switchTab('evolutionary')">
+                <button class="tab-button" data-tab="evolutionary">
                     🧬 Algoritmos Evolutivos
                 </button>
-                <button class="tab-button" onclick="switchTab('ml')">
+                <button class="tab-button" data-tab="ml">
                     🤖 Machine Learning
                 </button>
             </div>
@@ -78,7 +78,7 @@
                             <canvas id="linear-search-canvas" width="600" height="200"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Búsqueda Lineal</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -174,7 +174,7 @@ funcion BusquedaLineal(array, objetivo):
                             <canvas id="binary-search-canvas" width="600" height="200"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Búsqueda Binaria</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -294,7 +294,7 @@ funcion BusquedaBinaria(array_ordenado, objetivo):
                             <canvas id="bubble-sort-canvas" width="600" height="300"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Bubble Sort</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -404,7 +404,7 @@ funcion BubbleSort(array):
                             <canvas id="selection-sort-canvas" width="600" height="300"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Selection Sort</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -513,7 +513,7 @@ funcion SelectionSort(array):
                             <canvas id="insertion-sort-canvas" width="600" height="300"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Insertion Sort</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -621,7 +621,7 @@ funcion InsertionSort(array):
                             <canvas id="merge-sort-canvas" width="600" height="300"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Merge Sort</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -743,7 +743,7 @@ funcion Merge(array, inicio, medio, fin):
                             <canvas id="quick-sort-canvas" width="600" height="300"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Quick Sort</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -880,7 +880,7 @@ funcion Partition(array, inicio, fin):
                             <canvas id="astar-canvas" width="600" height="600"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo A*</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -1007,7 +1007,7 @@ funcion A_Estrella(inicio, objetivo):
                             <canvas id="hillclimbing-canvas" width="600" height="400"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Hill Climbing</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -1143,7 +1143,7 @@ funcion HillClimbing(funcion_objetivo, max_iteraciones):
                             </div>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Simulated Annealing</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -1290,7 +1290,7 @@ funcion SimulatedAnnealing(temp_inicial, tasa_enfriamiento, max_iter):
                             <canvas id="genetic-canvas" width="600" height="400"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo Algoritmos Genéticos</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -1461,7 +1461,7 @@ funcion mutar(individuo):
                             <canvas id="pso-canvas" width="600" height="400"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo PSO</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -1630,7 +1630,7 @@ funcion ParticleSwarmOptimization(num_particulas, max_iteraciones):
                             <canvas id="kmeans-canvas" width="600" height="500"></canvas>
 
                             <div class="pseudocode-box collapsible">
-                                <div class="pseudocode-header" onclick="togglePseudocode(this)">
+                                <div class="pseudocode-header">
                                     <h4><span class="toggle-icon">▶</span> 📋 Pseudocódigo K-means</h4>
                                 </div>
                                 <div class="pseudocode-content">
@@ -1764,6 +1764,8 @@ funcion distancia_euclidiana(p1, p2):
                                     <span class="stat-value" id="kmeans-convergence">-</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                 </section>
 
             </div>
@@ -1812,7 +1814,13 @@ funcion distancia_euclidiana(p1, p2):
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/sorting.js"></script>
+    <script src="js/heuristics.js"></script>
+    <script src="js/evolutionary.js"></script>
+    <script src="js/ml.js"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>

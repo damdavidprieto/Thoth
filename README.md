@@ -129,10 +129,17 @@ Técnica de optimización inspirada en la evolución biológica que utiliza sele
 
 ```
 Thoth/
-├── index.html      # Estructura HTML principal
-├── styles.css      # Sistema de diseño y estilos
-├── script.js       # Lógica de los algoritmos y visualizaciones
-└── README.md       # Este archivo
+├── index.html          # Estructura HTML principal
+├── styles.css          # Sistema de diseño y estilos
+├── js/
+│   ├── core.js         # Base común: canvas, ejecución cancelable y utilidades
+│   ├── search.js       # Búsqueda lineal y binaria
+│   ├── sorting.js      # Burbuja, selección, inserción, mezcla y rápido
+│   ├── heuristics.js   # A*, Hill Climbing y Recocido Simulado
+│   ├── evolutionary.js # Algoritmo genético y PSO
+│   ├── ml.js           # K-means
+│   └── app.js          # Pestañas, pseudocódigo, acertijos y arranque
+└── README.md           # Este archivo
 ```
 
 ## 🎨 Diseño
